@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 2 · Virtual Assistance Techniques — VAA Global Medical VA</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#071525;--navy2:#0c1e38;--navy3:#132848;--navy4:#1a3560;
+  --teal:#00d4aa;--teal2:#00b894;--teal3:#007c65;--teala:rgba(0,212,170,0.12);
+  --cyan:#38bdf8;--cyan2:#0ea5e9;--cyana:rgba(56,189,248,0.1);
+  --amber:#fac74b;--ambera:rgba(250,199,75,0.1);
+  --red:#e24b4a;--reda:rgba(226,75,74,0.1);
+  --slate:#8fa3c0;--slate2:#6b829e;
+  --white:#e8f0fe;--white2:#c5d4e8;
+  --border:rgba(0,212,170,0.15);--border2:rgba(0,212,170,0.25);
+  --card:rgba(15,30,58,0.95);
+  --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--font);line-height:1.6;font-size:15px}
+
+/* NAV */
+.topnav{position:sticky;top:0;z-index:100;background:rgba(7,21,37,0.97);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;overflow-x:auto;padding:0}
+.nav-logo{padding:12px 20px;font-family:var(--mono);font-size:12px;color:var(--teal);border-right:1px solid var(--border);white-space:nowrap;letter-spacing:.05em}
+.nav-tab{padding:14px 18px;font-size:12px;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.02em}
+.nav-tab:hover{color:var(--white);background:rgba(0,212,170,0.04)}
+.nav-tab.active{color:var(--teal);border-bottom-color:var(--teal);background:rgba(0,212,170,0.06)}
+.nav-progress{margin-left:auto;padding:12px 20px;font-family:var(--mono);font-size:11px;color:var(--slate);border-left:1px solid var(--border);white-space:nowrap}
+.nav-progress span{color:var(--teal);font-weight:600}
+
+/* HERO */
+.hero{background:var(--navy2);padding:4rem 2rem 3rem;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(0,212,170,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,170,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,170,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,170,0.1);border:1px solid var(--border2);border-radius:20px;padding:6px 16px;font-size:11px;color:var(--teal);font-family:var(--mono);margin-bottom:1.5rem;letter-spacing:.06em}
+.pulse{width:8px;height:8px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.hero h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1rem}
+.hero h1 em{color:var(--teal);font-style:normal}
+.hero-sub{color:var(--slate);font-size:.95rem;max-width:580px;margin:0 auto 2rem;line-height:1.7}
+.hero-stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.hstat{text-align:center}
+.hstat-n{font-size:2rem;font-weight:700;color:var(--teal);font-family:var(--mono)}
+.hstat-l{font-size:11px;color:var(--slate);margin-top:2px;letter-spacing:.04em}
+
+/* LAYOUT */
+.page{display:none;animation:fadeIn .3s ease}
+.page.active{display:block}
+.panel{display:none}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.container{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem}
+.section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.8rem;margin-bottom:1.5rem}
+.section-title{font-size:14px;font-weight:600;color:var(--teal);margin-bottom:1.2rem;display:flex;align-items:center;gap:10px;letter-spacing:.02em}
+.section-title::before{content:'';width:3px;height:18px;background:var(--teal);border-radius:2px;flex-shrink:0}
+.page-header{margin-bottom:2rem}
+.page-tag{font-size:10px;font-family:var(--mono);color:var(--teal);background:rgba(0,212,170,0.1);border:1px solid var(--border);border-radius:4px;padding:3px 10px;display:inline-block;margin-bottom:10px;letter-spacing:.08em}
+.page-title{font-size:2rem;font-weight:700;color:#fff;margin-bottom:.5rem}
+.page-desc{color:var(--slate);font-size:.9rem;line-height:1.7;max-width:680px}
+
+/* TYPOGRAPHY */
+p{color:var(--white2);line-height:1.75;font-size:.9rem}
+strong{color:var(--white);font-weight:600}
+.highlight{color:var(--teal);font-weight:600}
+.mono{font-family:var(--mono);font-size:.85em;background:rgba(0,212,170,0.08);padding:2px 6px;border-radius:4px;color:var(--teal)}
+
+/* CARDS GRID */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.card{background:rgba(0,12,30,0.7);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
+.card-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:.5rem}
+.card-body{font-size:12px;color:var(--slate);line-height:1.6}
+.card.teal{border-color:rgba(0,212,170,0.3);background:rgba(0,212,170,0.05)}
+.card.cyan{border-color:rgba(56,189,248,0.25);background:rgba(56,189,248,0.05)}
+.card.amber{border-color:rgba(250,199,75,0.25);background:rgba(250,199,75,0.05)}
+.card.red{border-color:rgba(226,75,74,0.25);background:rgba(226,75,74,0.05)}
+.card-teal .card-title{color:var(--teal)}
+.card-cyan .card-title{color:var(--cyan)}
+.card-amber .card-title{color:var(--amber)}
+.card-red .card-title{color:#f09595}
+
+/* SCENARIO BOX */
+.scenario{background:rgba(0,20,45,0.8);border:1px solid rgba(56,189,248,0.2);border-radius:10px;padding:1.3rem;margin:1rem 0}
+.scenario-label{font-size:10px;font-family:var(--mono);color:var(--cyan);letter-spacing:.1em;margin-bottom:.6rem}
+.scenario-body{font-size:.875rem;color:var(--white);line-height:1.75}
+.scenario-body em{color:var(--cyan);font-style:italic}
+.scenario-body .va-says{color:var(--teal);display:block;margin-top:.5rem}
+.scenario-body .note{font-size:.8rem;color:var(--amber);display:block;margin-top:.5rem;font-style:italic}
+
+/* CONVERSATION */
+.convo{background:rgba(0,10,28,0.9);border-radius:12px;padding:1.2rem;margin:1rem 0;border:1px solid var(--border)}
+.msg{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.msg:last-child{margin-bottom:0}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;font-family:var(--mono)}
+.av-pt{background:rgba(56,189,248,0.2);color:var(--cyan)}
+.av-va{background:rgba(0,212,170,0.2);color:var(--teal)}
+.av-dr{background:rgba(250,199,75,0.2);color:var(--amber)}
+.bubble{font-size:.85rem;line-height:1.65;padding:10px 14px;border-radius:10px;max-width:88%}
+.bub-pt{background:rgba(56,189,248,0.07);border:1px solid rgba(56,189,248,0.18)}
+.bub-va{background:rgba(0,212,170,0.07);border:1px solid rgba(0,212,170,0.18)}
+.bub-dr{background:rgba(250,199,75,0.07);border:1px solid rgba(250,199,75,0.18)}
+.bubble .ann{font-size:.75rem;color:var(--teal);margin-top:.4rem;font-style:italic;opacity:.85}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.step:last-child{border-bottom:none}
+.step-num{width:30px;height:30px;background:rgba(0,212,170,0.12);border:1px solid var(--teal3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);color:var(--teal);flex-shrink:0;margin-top:2px}
+.step-content{}
+.step-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.step-body{font-size:.83rem;color:var(--slate);line-height:1.6}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:1rem 0}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:rgba(0,212,170,0.1);color:var(--teal);font-weight:600;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border2);font-size:.8rem;letter-spacing:.03em}
+td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--white2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,212,170,0.03)}
+.td-good{color:var(--teal)}
+.td-bad{color:#f09595}
+.td-note{color:var(--amber);font-size:.78rem}
+
+/* FORMS / DOCS */
+.doc-form{background:rgba(240,248,255,0.04);border:1px solid rgba(200,220,255,0.1);border-radius:10px;padding:1.5rem;font-family:var(--mono);font-size:.78rem}
+.doc-form h4{color:var(--teal);font-size:.82rem;letter-spacing:.06em;margin-bottom:.8rem;margin-top:1.2rem;border-top:1px solid var(--border);padding-top:.8rem}
+.doc-form h4:first-child{border-top:none;margin-top:0;padding-top:0}
+.doc-field{display:flex;gap:0;margin-bottom:6px;align-items:flex-end}
+.doc-field label{color:var(--slate);min-width:160px;font-size:.75rem;flex-shrink:0}
+.doc-field .line{flex:1;border-bottom:1px solid rgba(200,220,255,0.2);min-height:20px;padding-bottom:2px;color:var(--white);font-size:.78rem}
+.doc-field .filled{color:var(--cyan)}
+.doc-section-note{font-size:.72rem;color:var(--slate2);margin-top:.3rem;font-style:italic}
+
+/* ALERT BOXES */
+.alert{border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;font-size:.85rem;line-height:1.6}
+.alert-teal{background:rgba(0,212,170,0.08);border:1px solid rgba(0,212,170,0.25);color:rgba(0,212,170,0.9)}
+.alert-amber{background:rgba(250,199,75,0.08);border:1px solid rgba(250,199,75,0.25);color:#fac74b}
+.alert-red{background:rgba(226,75,74,0.08);border:1px solid rgba(226,75,74,0.25);color:#f09595}
+.alert-cyan{background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.2);color:var(--cyan)}
+.alert-label{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;display:block;margin-bottom:.3rem;opacity:.7}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:6px;margin-top:.8rem}
+.check-item{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--white2)}
+.check-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.ci-ok{background:rgba(0,212,170,0.15);color:var(--teal)}
+.ci-bad{background:rgba(226,75,74,0.15);color:#f09595}
+.ci-warn{background:rgba(250,199,75,0.15);color:var(--amber)}
+
+/* TAGS */
+.tag{display:inline-block;font-size:.7rem;font-family:var(--mono);padding:2px 8px;border-radius:4px;margin:2px}
+.tag-teal{background:rgba(0,212,170,0.15);color:var(--teal);border:1px solid rgba(0,212,170,0.25)}
+.tag-cyan{background:rgba(56,189,248,0.12);color:var(--cyan);border:1px solid rgba(56,189,248,0.2)}
+.tag-amber{background:rgba(250,199,75,0.12);color:var(--amber);border:1px solid rgba(250,199,75,0.2)}
+.tag-red{background:rgba(226,75,74,0.1);color:#f09595;border:1px solid rgba(226,75,74,0.2)}
+
+/* QUIZ */
+.quiz-block{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin-bottom:1rem}
+.q-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.q-num-badge{background:rgba(0,212,170,0.15);color:var(--teal);font-family:var(--mono);font-size:.7rem;padding:3px 8px;border-radius:4px;border:1px solid rgba(0,212,170,0.25);flex-shrink:0;margin-top:2px}
+.q-text{font-size:.9rem;color:var(--white);line-height:1.6}
+.q-opts{display:grid;gap:7px;margin-bottom:.5rem}
+.qopt{background:rgba(0,10,28,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:.83rem;color:var(--slate);transition:all .15s;text-align:left;font-family:var(--font);line-height:1.4;width:100%}
+.qopt:hover:not([disabled]){border-color:rgba(0,212,170,0.35);color:var(--white);background:rgba(0,212,170,0.06)}
+.qopt.correct{border-color:var(--teal);background:rgba(0,212,170,0.12);color:var(--teal)}
+.qopt.wrong{border-color:var(--red);background:rgba(226,75,74,0.1);color:#f09595}
+.qopt.reveal{border-color:rgba(0,212,170,0.3);background:rgba(0,212,170,0.06);color:rgba(0,212,170,0.75)}
+.q-exp{font-size:.8rem;padding:10px 14px;border-radius:8px;line-height:1.65;display:none;margin-top:4px}
+.q-exp.ok{background:rgba(0,212,170,0.07);border:1px solid rgba(0,212,170,0.2);color:rgba(0,212,170,0.9)}
+.q-exp.bad{background:rgba(226,75,74,0.07);border:1px solid rgba(226,75,74,0.2);color:#f09595}
+.prog-bar{background:rgba(255,255,255,0.07);border-radius:3px;height:4px;margin:10px 0 4px;overflow:hidden}
+.prog-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .4s}
+.prog-text{font-size:.72rem;color:var(--slate);font-family:var(--mono)}
+.score-result{background:rgba(0,15,35,0.8);border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center;margin-top:1.5rem;display:none}
+.score-big{font-size:3.5rem;font-weight:700;font-family:var(--mono)}
+.score-label{font-size:.85rem;color:var(--slate);margin:.4rem 0 1rem}
+.score-msg{font-size:.9rem;color:var(--white2);margin-bottom:1.2rem}
+.btn{display:inline-block;padding:9px 22px;border-radius:8px;font-size:.83rem;font-weight:600;cursor:pointer;border:none;font-family:var(--font);transition:all .2s}
+.btn-primary{background:var(--teal);color:var(--navy)}
+.btn-primary:hover{background:var(--teal2)}
+.btn-outline{background:transparent;color:var(--teal);border:1px solid var(--teal)}
+.btn-outline:hover{background:rgba(0,212,170,0.1)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;flex-wrap:gap}
+
+/* CASE STUDY */
+.case-study{border:1px solid rgba(56,189,248,0.2);border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;background:rgba(56,189,248,0.03)}
+.case-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.case-title{font-size:1rem;font-weight:600;color:#fff;margin-bottom:.4rem}
+.case-section{font-size:.78rem;font-family:var(--mono);color:var(--cyan);margin:.8rem 0 .3rem;letter-spacing:.06em}
+
+/* DO/DONT */
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1rem 0}
+.do-col{background:rgba(0,212,170,0.05);border:1px solid rgba(0,212,170,0.2);border-radius:8px;padding:1rem}
+.dont-col{background:rgba(226,75,74,0.05);border:1px solid rgba(226,75,74,0.2);border-radius:8px;padding:1rem}
+.do-col h5{color:var(--teal);font-size:.78rem;letter-spacing:.06em;margin-bottom:.7rem;font-family:var(--mono)}
+.dont-col h5{color:#f09595;font-size:.78rem;letter-spacing:.06em;margin-bottom:.7rem;font-family:var(--mono)}
+.do-col li,.dont-col li{font-size:.82rem;color:var(--white2);margin-bottom:.5rem;padding-left:1rem;position:relative;line-height:1.5}
+.do-col li::before{content:'✓';position:absolute;left:0;color:var(--teal)}
+.dont-col li::before{content:'✗';position:absolute;left:0;color:#f09595}
+
+/* TEMPLATE BOX */
+.template-box{background:rgba(0,5,18,0.9);border:1px solid rgba(0,212,170,0.15);border-radius:10px;padding:1.4rem;margin:1rem 0;font-family:var(--mono);font-size:.78rem;line-height:1.8;color:var(--white2)}
+.template-box .field{color:var(--cyan)}
+.template-box .instruction{color:rgba(250,199,75,0.7);font-style:italic}
+.template-box .section-break{color:var(--teal);display:block;margin-top:.6rem;font-weight:600;font-size:.76rem;letter-spacing:.06em}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .dodont{grid-template-columns:1fr}
+  .hero h1{font-size:1.8rem}
+  .hero-stats{gap:1.2rem}
+  .doc-field{flex-direction:column;gap:2px}
+  .doc-field label{min-width:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-logo">VAA · MODULE 2</div>
+  <div class="nav-tab active" onclick="showPage('sched')">Appointment Scheduling</div>
+  <div class="nav-tab" onclick="showPage('intake')">Patient Intake Forms</div>
+  <div class="nav-tab" onclick="showPage('docs')">Documentation</div>
+  <div class="nav-tab" onclick="showPage('insur')">Insurance Verification</div>
+  <div class="nav-tab" onclick="showPage('quiz')">Quizzes</div>
+  <div class="nav-tab" onclick="showPage('tools')" style="color:var(--amber);border-bottom:2px solid transparent">Tools &amp; Resources</div>
+  <div class="nav-progress">Progress: <span id="overall-pct">0%</span></div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="badge"><span class="pulse"></span>Module 2 · Virtual Assistance Techniques</div>
+  <h1>Practical Skills for<br><em>Medical Virtual Assistants</em></h1>
+  <p class="hero-sub">Real-world techniques, templates, documented workflows, and case studies — everything you need to perform confidently as a remote medical VA.</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">4</div><div class="hstat-l">CORE LESSONS</div></div>
+    <div class="hstat"><div class="hstat-n">40</div><div class="hstat-l">QUIZ QUESTIONS</div></div>
+    <div class="hstat"><div class="hstat-n">12+</div><div class="hstat-l">CASE STUDIES</div></div>
+    <div class="hstat"><div class="hstat-n">30+</div><div class="hstat-l">TOOLS & LINKS</div></div>
+  </div>
+</div>
+
+<!-- ===================== PAGE 1: APPOINTMENT SCHEDULING ===================== -->
+<div id="page-sched" class="page active">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">LESSON 01 · APPOINTMENT SCHEDULING</div>
+    <h2 class="page-title">Appointment Scheduling</h2>
+    <p class="page-desc">Scheduling is the backbone of a medical practice. As a VA, you control patient flow. Done well, it reduces no-shows, improves care access, and keeps providers productive.</p>
+  </div>
+
+  <!-- KEY PRINCIPLES -->
+  <div class="section">
+    <div class="section-title">The 5 principles of great medical scheduling</div>
+    <div class="grid3">
+      <div class="card teal card-teal"><div class="card-title">1. Triage before booking</div><div class="card-body">Understand why the patient is calling before choosing a slot. New patient? Follow-up? Urgent? Each needs different booking logic.</div></div>
+      <div class="card cyan card-cyan"><div class="card-title">2. Two-choice rule</div><div class="card-body">Offer exactly two time slots. Open-ended "when are you free?" wastes time. Two choices respect the patient's autonomy efficiently.</div></div>
+      <div class="card amber card-amber"><div class="card-title">3. Confirm everything</div><div class="card-body">Verbally repeat: date, time, provider, location/telehealth link, and any prep instructions before ending the call.</div></div>
+      <div class="card teal card-teal"><div class="card-title">4. Know urgency flags</div><div class="card-body">Chest pain, confusion, severe bleeding, difficulty breathing → never schedule. Redirect to ER/911 immediately.</div></div>
+      <div class="card cyan card-cyan"><div class="card-title">5. Document every change</div><div class="card-body">Every booking, cancellation, reschedule must be logged with timestamp and reason in the EHR or scheduling system.</div></div>
+    </div>
+  </div>
+
+  <!-- APPOINTMENT TYPES -->
+  <div class="section">
+    <div class="section-title">Appointment types & slot durations</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Appointment Type</th><th>Typical Duration</th><th>What to Verify</th><th>Common EHR Code</th></tr></thead>
+        <tbody>
+          <tr><td><strong>New patient — primary care</strong></td><td>45–60 min</td><td>Insurance eligibility, referral if required, new patient paperwork sent in advance</td><td class="mono">NP-PC</td></tr>
+          <tr><td><strong>Established patient follow-up</strong></td><td>15–20 min</td><td>Reason for visit matches provider specialty, last visit date</td><td class="mono">FU-EST</td></tr>
+          <tr><td><strong>Annual wellness exam</strong></td><td>30–45 min</td><td>Insurance covers preventive (most do 1x/year), fasting instructions if labs required</td><td class="mono">AWV</td></tr>
+          <tr><td><strong>Specialist — new referral</strong></td><td>30–45 min</td><td>Referral authorization number from PCP, insurance prior auth if needed</td><td class="mono">SP-NEW</td></tr>
+          <tr><td><strong>Telehealth / virtual visit</strong></td><td>15–20 min</td><td>Patient has device + stable internet, send platform link 24h in advance</td><td class="mono">TH-VIS</td></tr>
+          <tr><td><strong>Procedure (minor)</strong></td><td>30–60 min</td><td>Prior auth confirmed, fasting/prep instructions, consent form on file</td><td class="mono">PROC-MIN</td></tr>
+          <tr><td><strong>Urgent / same-day</strong></td><td>15 min</td><td>Triage reason (never schedule ER-level symptoms), note urgency in chart</td><td class="mono">URG-SD</td></tr>
+          <tr><td><strong>Mental health (initial)</strong></td><td>60 min</td><td>Insurance mental health benefits, provider licensure (LCSW/psychiatrist), PHQ-9 form sent</td><td class="mono">MH-INIT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LIVE CALL WALKTHROUGH -->
+  <div class="section">
+    <div class="section-title">Live call: booking a specialist referral (full walkthrough)</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">Study the entire conversation below. Each VA message is annotated with the technique being used.</p>
+    <div class="convo">
+      <div class="msg"><div class="avatar av-pt">PT</div><div><div class="bubble bub-pt">Hi, my doctor said I need to see a cardiologist. I got a referral but I don't really know what to do next.</div></div></div>
+      <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Good morning! I'm happy to help you with that. Seeing a cardiologist is a great next step for your heart health. Could I get your full name and date of birth so I can pull up your chart?<div class="ann">↳ Warm greeting, normalize the referral to reduce anxiety, verify identity before accessing any PHI</div></div></div></div>
+      <div class="msg"><div class="avatar av-pt">PT</div><div><div class="bubble bub-pt">It's Amaka Osei, born June 3rd, 1975.</div></div></div>
+      <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Thank you, Ms. Osei. I can see your referral from Dr. Mensah to Dr. Adeyemi in Cardiology — it's already on file. Do you have your insurance card handy so I can verify your coverage takes just a moment?<div class="ann">↳ Confirms referral exists before proceeding, frames insurance verification as fast and routine</div></div></div></div>
+      <div class="msg"><div class="avatar av-pt">PT</div><div><div class="bubble bub-pt">Yes, I have it. It's BlueCross BlueShield, member ID BCB004423.</div></div></div>
+      <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Perfect. I'm verifying now... Great news — Dr. Adeyemi is in-network and your plan covers specialist visits at a $40 copay. I have two openings: this Thursday at 10am or next Monday at 2pm. Which works better for you?<div class="ann">↳ States verification result clearly, gives cost so there are no billing surprises, two-choice rule applied</div></div></div></div>
+      <div class="msg"><div class="avatar av-pt">PT</div><div><div class="bubble bub-pt">Monday at 2pm please.</div></div></div>
+      <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Confirmed! You're booked with Dr. Adeyemi, Monday at 2pm, Cardiology Suite on the 3rd floor of our main building. A few things to prepare: please bring your insurance card, a list of your current medications, and arrive 15 minutes early for new patient paperwork. I'll also send a confirmation text and email. Is there anything else I can help you with today?<div class="ann">↳ Full confirmation: provider, day, time, location, prep instructions, multi-channel confirmation, professional close</div></div></div></div>
+    </div>
+  </div>
+
+  <!-- STEP BY STEP PROCESS -->
+  <div class="section">
+    <div class="section-title">The 7-step scheduling workflow</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Greet & identify the patient</div><div class="step-body">Use name + DOB minimum. Never access records until identity is confirmed. "Could I get your full name and date of birth?"</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Determine the reason for the visit</div><div class="step-body">Ask: "What brings you in today?" or "What would you like to be seen for?" This determines appointment type, duration needed, and urgency level.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Triage urgency</div><div class="step-body">Listen for red-flag symptoms: chest pain, difficulty breathing, numbness, bleeding, confusion, high fever. If present — stop and redirect to ER or 911. Never schedule emergencies.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Check referral & prior auth</div><div class="step-body">For specialist visits: confirm the referral exists in the system. Check if the insurer requires prior authorization for this visit type. Flag if pending.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Verify insurance eligibility</div><div class="step-body">Run real-time eligibility check in your EHR or clearinghouse. Confirm: in-network status, active coverage, copay amount, any deductible remaining.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-title">Offer two time slots</div><div class="step-body">Match slot duration to appointment type. Offer morning and afternoon options when possible. If scheduling a new patient, send intake paperwork immediately after booking.</div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-content"><div class="step-title">Confirm & document</div><div class="step-body">Verbally repeat all details. Log the booking in the EHR with timestamp and any special notes. Send confirmation via patient's preferred channel (text/email).</div></div></div>
+    </div>
+  </div>
+
+  <!-- CASE STUDIES -->
+  <div class="section">
+    <div class="section-title">Case studies</div>
+
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-amber">CASE 01</span><span class="tag tag-cyan">SCHEDULING ERROR</span><span class="tag tag-red">HIGH STAKES</span></div>
+      <div class="case-title">The Misrouted Cardiology Patient</div>
+      <div class="case-section">WHAT HAPPENED</div>
+      <p style="font-size:.85rem">A VA at a busy clinic received a call from a 58-year-old patient complaining of "chest tightness and feeling tired." The VA, focused on clearing the call queue, scheduled a standard follow-up appointment for the next week without asking further questions.</p>
+      <div class="case-section">THE PROBLEM</div>
+      <p style="font-size:.85rem">The patient had classic signs of unstable angina — a cardiac emergency. By the time the patient came to the follow-up a week later, they had suffered a minor heart attack two days prior and gone to the ER on their own.</p>
+      <div class="case-section">WHAT SHOULD HAVE HAPPENED</div>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Ask follow-up triage questions: "How long have you had chest tightness? Does it spread to your arm or jaw? Are you short of breath?"</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Any combination of chest pain + fatigue in a patient over 50 = urgent clinical assessment, not routine scheduling</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Redirect: "I need to have a nurse speak with you right now before we schedule anything. Please hold." or "Please call 911 or go to the nearest ER."</div></div>
+      </div>
+      <div class="alert alert-red" style="margin-top:1rem"><span class="alert-label">LESSON</span>Scheduling is a clinical function. A VA who books incorrectly can delay life-saving care. Always triage before you type.</div>
+    </div>
+
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-teal">CASE 02</span><span class="tag tag-teal">BEST PRACTICE</span></div>
+      <div class="case-title">Handling a Same-Day Urgent Request Correctly</div>
+      <div class="case-section">SCENARIO</div>
+      <p style="font-size:.85rem">A patient calls Monday morning saying their child has had a high fever (39.8°C / 103.6°F) for two days, is lethargic and refusing to eat.</p>
+      <div class="case-section">CORRECT VA RESPONSE</div>
+      <div class="convo">
+        <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">I understand — a fever that high for two days does need to be seen today. Let me check what we have for same-day slots with Dr. Owusu. Can I get your child's date of birth?<div class="ann">↳ Does not dismiss concern; immediately acts on urgency; collects necessary info</div></div></div></div>
+        <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">We have a same-day slot at 11:30am this morning. I'll flag this as urgent in the notes so the nurse is prepared. Please bring your child's insurance card and don't give any more fever reducers for 4 hours before the appointment so the doctor can get an accurate reading. Will 11:30 work?<div class="ann">↳ Books urgent slot, flags urgency in chart, gives specific pre-visit instructions, confirms</div></div></div></div>
+      </div>
+      <div class="alert alert-teal" style="margin-top:.5rem"><span class="alert-label">LESSON</span>Same-day urgent bookings require flagging in the chart with symptom notes so clinical staff can prepare before the patient arrives.</div>
+    </div>
+  </div>
+
+  <!-- NO-SHOW MANAGEMENT -->
+  <div class="section">
+    <div class="section-title">No-show & cancellation management</div>
+    <div class="grid2">
+      <div>
+        <p style="font-size:.85rem;margin-bottom:1rem">No-shows cost clinics thousands per week. As a VA, your reminder calls and follow-up processes directly impact revenue and patient outcomes.</p>
+        <div class="steps">
+          <div class="step"><div class="step-num">48h</div><div class="step-content"><div class="step-title">First reminder call or text</div><div class="step-body">Confirm appointment, ask if they still plan to attend. Offer to reschedule if needed. Log the contact attempt.</div></div></div>
+          <div class="step"><div class="step-num">24h</div><div class="step-content"><div class="step-title">Second reminder</div><div class="step-body">Automated text/email with date, time, provider, location, and any prep reminders. Include cancellation policy.</div></div></div>
+          <div class="step"><div class="step-num">2h</div><div class="step-content"><div class="step-title">Same-day check (high-risk patients)</div><div class="step-body">For chronic condition patients (diabetes, hypertension) or post-procedure follow-ups, a personal call adds significant no-show reduction.</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="alert alert-amber"><span class="alert-label">WHEN A PATIENT NO-SHOWS</span>Document the no-show in the EHR with timestamp. Attempt to call within 2 hours. For clinical follow-ups, inform the provider. Some clinics require a nurse callback for missed chronic disease appointments.</div>
+        <div style="margin-top:12px">
+          <div class="template-box">
+            <span class="section-break">REMINDER CALL SCRIPT</span>
+"Hello, may I speak with <span class="field">[Patient Name]</span>? This is <span class="field">[Your Name]</span> calling from <span class="field">[Clinic Name]</span>. I'm calling to confirm your appointment with <span class="field">[Dr. Name]</span> on <span class="field">[Date]</span> at <span class="field">[Time]</span>. <span class="instruction">[Pause for confirmation]</span> Great! Please remember to <span class="field">[bring insurance card / fast from midnight / arrive 15 mins early]</span>. If you need to reschedule, please call us at least 24 hours before. Is there anything you'd like me to note for the doctor before your visit?"
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULING TOOLS CALLOUT -->
+  <div class="section" style="border-color:rgba(250,199,75,0.25);background:rgba(250,199,75,0.04)">
+    <div class="section-title" style="color:var(--amber)">Scheduling tools used by real medical VAs</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">These are the actual platforms you will encounter on the job. Explore each one — many have free trials or demos.</p>
+    <div class="grid2">
+      <a href="https://calendly.com" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:18px">📅</span><div class="card-title" style="color:var(--amber)">Calendly <span style="font-size:10px;font-family:var(--mono);opacity:.6">↗ free plan available</span></div></div><div class="card-body">The most widely used scheduling tool for VAs. Set availability, share a booking link, sync with Google/Outlook. Free plan lets you book unlimited appointments with 1 event type — perfect for getting started.</div></div></a>
+      <a href="https://acuityscheduling.com" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:18px">🗓️</span><div class="card-title" style="color:var(--amber)">Acuity Scheduling <span style="font-size:10px;font-family:var(--mono);opacity:.6">↗ HIPAA BAA available</span></div></div><div class="card-body">More powerful than Calendly for medical settings — includes custom intake forms, payment collection, automated reminders, and a HIPAA Business Associate Agreement on premium plans.</div></div></a>
+      <a href="https://jane.app" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:18px">🏥</span><div class="card-title" style="color:var(--amber)">Jane App <span style="font-size:10px;font-family:var(--mono);opacity:.6">↗ clinic-grade</span></div></div><div class="card-body">Built specifically for health clinics. Combines scheduling, charting, billing, and telehealth in one platform. Widely used by physiotherapy, mental health, and allied health practices.</div></div></a>
+      <a href="https://www.open-emr.org" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:18px">💻</span><div class="card-title" style="color:var(--amber)">OpenEMR <span style="font-size:10px;font-family:var(--mono);opacity:.6">↗ 100% free & open source</span></div></div><div class="card-body">The world's most popular free EHR. Includes scheduling, patient records, billing, and e-prescriptions. ONC certified. Ideal for learning EHR workflows without a subscription cost.</div></div></a>
+    </div>
+    <div class="alert alert-amber" style="margin-top:1rem"><span class="alert-label">PRACTISE TIP</span>Sign up for a free Calendly account and practice creating appointment types, setting buffer times, and sending booking links. This is the single fastest way to build real scheduling confidence before your first job.</div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:1.5rem">
+    <button class="btn btn-primary" onclick="showPage('intake')">Next: Patient Intake Forms →</button>
+  </div>
+</div>
+</div>
+
+<!-- ===================== PAGE 2: PATIENT INTAKE FORMS ===================== -->
+<div id="page-intake" class="page">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">LESSON 02 · PATIENT INTAKE FORMS</div>
+    <h2 class="page-title">Patient Intake Forms</h2>
+    <p class="page-desc">Intake forms are the foundation of accurate clinical records and smooth billing. A VA must know what to collect, how to collect it, and what to do when information is missing or inconsistent.</p>
+  </div>
+
+  <!-- WHY INTAKE MATTERS -->
+  <div class="section">
+    <div class="section-title">Why intake accuracy matters</div>
+    <div class="grid3">
+      <div class="card teal card-teal"><div class="card-title">Clinical safety</div><div class="card-body">Missing allergy or medication information can lead to dangerous drug interactions during treatment or prescribing.</div></div>
+      <div class="card cyan card-cyan"><div class="card-title">Billing accuracy</div><div class="card-body">Wrong insurance ID, member name, or group number leads to claim denials and delayed payments — often weeks of rework.</div></div>
+      <div class="card amber card-amber"><div class="card-title">Legal compliance</div><div class="card-body">Patient consent, privacy notices (HIPAA), and authorization forms must be completed and signed before services are rendered.</div></div>
+    </div>
+  </div>
+
+  <!-- NEW PATIENT INTAKE FORM -->
+  <div class="section">
+    <div class="section-title">New patient intake form — annotated template</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">This is the standard form a VA sends to new patients and reviews upon arrival. Fields marked with <span class="tag tag-red">REQUIRED</span> must always be completed.</p>
+    <div class="doc-form">
+      <h4>SECTION 1 · PATIENT DEMOGRAPHICS <span class="tag tag-red">ALL REQUIRED</span></h4>
+      <div class="doc-field"><label>Full Legal Name</label><div class="line filled">Amaka Osei</div></div>
+      <div class="doc-field"><label>Date of Birth</label><div class="line filled">June 3, 1975</div></div>
+      <div class="doc-field"><label>Gender Identity</label><div class="line filled">Female</div></div>
+      <div class="doc-field"><label>Social Security # (last 4)</label><div class="line filled">****–**–3421</div></div>
+      <div class="doc-field"><label>Phone (primary)</label><div class="line filled">+234 803 441 2290</div></div>
+      <div class="doc-field"><label>Email Address</label><div class="line filled">amaka.osei@email.com</div></div>
+      <div class="doc-field"><label>Home Address</label><div class="line filled">14 Adeola Way, Ikeja, Lagos</div></div>
+      <div class="doc-field"><label>Emergency Contact Name</label><div class="line filled">Kwame Osei (Husband)</div></div>
+      <div class="doc-field"><label>Emergency Contact Phone</label><div class="line filled">+234 803 556 0011</div></div>
+
+      <h4>SECTION 2 · INSURANCE INFORMATION <span class="tag tag-red">REQUIRED FOR BILLING</span></h4>
+      <div class="doc-field"><label>Insurance Provider</label><div class="line filled">BlueCross BlueShield</div></div>
+      <div class="doc-field"><label>Member ID #</label><div class="line filled">BCB004423</div></div>
+      <div class="doc-field"><label>Group Number</label><div class="line filled">GRP-78921</div></div>
+      <div class="doc-field"><label>Policy Holder Name</label><div class="line filled">Amaka Osei</div></div>
+      <div class="doc-field"><label>Policy Holder DOB</label><div class="line filled">June 3, 1975</div></div>
+      <div class="doc-field"><label>Secondary Insurance?</label><div class="line filled">None</div></div>
+      <div class="doc-section-note">VA Note: Always scan both sides of the insurance card. Verify eligibility in the EHR before the patient arrives.</div>
+
+      <h4>SECTION 3 · MEDICAL HISTORY <span class="tag tag-amber">CLINICAL — DO NOT GUESS</span></h4>
+      <div class="doc-field"><label>Reason for Visit</label><div class="line filled">Cardiologist referral from Dr. Mensah — chest pain evaluation</div></div>
+      <div class="doc-field"><label>Current Medications</label><div class="line filled">Lisinopril 10mg, Metformin 500mg</div></div>
+      <div class="doc-field"><label>Known Allergies</label><div class="line filled">Penicillin (rash), Aspirin (intolerance)</div></div>
+      <div class="doc-field"><label>Past Surgeries</label><div class="line filled">Appendectomy 2008</div></div>
+      <div class="doc-field"><label>Chronic Conditions</label><div class="line filled">Hypertension, Type 2 Diabetes</div></div>
+      <div class="doc-field"><label>Family History</label><div class="line filled">Father: MI at 62. Mother: HTN.</div></div>
+      <div class="doc-section-note">VA Note: If a patient is unsure about medications or dosages, note "Patient unsure — confirm with pharmacy or referring provider" rather than leaving blank or guessing.</div>
+
+      <h4>SECTION 4 · CONSENTS & AUTHORIZATIONS <span class="tag tag-red">MUST BE SIGNED</span></h4>
+      <div class="doc-field"><label>HIPAA Privacy Notice</label><div class="line filled">Signed — 14 Apr 2025 ✓</div></div>
+      <div class="doc-field"><label>Consent to Treat</label><div class="line filled">Signed — 14 Apr 2025 ✓</div></div>
+      <div class="doc-field"><label>Financial Responsibility</label><div class="line filled">Signed — 14 Apr 2025 ✓</div></div>
+      <div class="doc-field"><label>Release of Information (if any)</label><div class="line filled">Spouse: Kwame Osei — Signed ✓</div></div>
+    </div>
+  </div>
+
+  <!-- COMMON INTAKE ERRORS -->
+  <div class="section">
+    <div class="section-title">Common intake errors & how to fix them</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Impact</th><th>Correct VA Action</th></tr></thead>
+        <tbody>
+          <tr><td>Wrong insurance member ID entered</td><td class="td-bad">Claim denied, delay in care billing</td><td class="td-good">Always verify ID by scanning card + cross-checking with insurer portal</td></tr>
+          <tr><td>Allergy field left blank</td><td class="td-bad">Clinical safety risk — provider may prescribe contraindicated medication</td><td class="td-good">Call or message patient before appointment: "We noticed the allergy section wasn't completed — could you share any known allergies?"</td></tr>
+          <tr><td>Emergency contact not captured</td><td class="td-bad">Cannot notify family in emergency</td><td class="td-good">Make it a standard question: "And who should we contact in case of an emergency?"</td></tr>
+          <tr><td>HIPAA notice not signed</td><td class="td-bad">HIPAA violation — services cannot legally be rendered</td><td class="td-good">Do not allow appointment to proceed. "We need your signature on one more form — it's our privacy notice. I'll send it to you right now."</td></tr>
+          <tr><td>Duplicate patient record created</td><td class="td-bad">Split medical history, billing errors, medication duplication risk</td><td class="td-good">Always search by DOB + last name before creating a new record. Flag duplicates to supervisor immediately.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CASE STUDY -->
+  <div class="section">
+    <div class="section-title">Case study: The billing nightmare from a typo</div>
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-amber">CASE 03</span><span class="tag tag-red">BILLING ERROR</span></div>
+      <div class="case-title">One Wrong Digit — Three Weeks of Rejected Claims</div>
+      <div class="case-section">WHAT HAPPENED</div>
+      <p style="font-size:.85rem">A VA typed the patient's insurance member ID as "BCB00442<strong>4</strong>" instead of "BCB00442<strong>3</strong>" — one digit off. The patient was seen and the clinic submitted three weeks of claims before realizing every one had been rejected. The billing team spent 6 hours correcting and resubmitting.</p>
+      <div class="case-section">ROOT CAUSE</div>
+      <p style="font-size:.85rem">The VA entered the number from memory after a phone call instead of scanning the card or asking the patient to spell it out. No verification step was in place.</p>
+      <div class="case-section">PREVENTION PROTOCOL</div>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Always ask the patient to spell out their member ID digit by digit: "Could you read out each digit of your member ID for me?"</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Run an eligibility check immediately after entry — an incorrect ID will return an error from the insurer's portal</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Scan both sides of the insurance card and attach to the patient's digital record</div></div>
+        <div class="check-item"><div class="check-icon ci-bad">✗</div><div>Never enter insurance information from memory or a previous call note — always re-verify</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTAKE FORM RESOURCES -->
+  <div class="section" style="border-color:rgba(250,199,75,0.25);background:rgba(250,199,75,0.04)">
+    <div class="section-title" style="color:var(--amber)">Real intake form examples & tools — open and study these</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">The best way to learn intake forms is to see real ones. Each link below opens an actual form or template used in healthcare practices.</p>
+    <div class="grid2">
+      <a href="https://eforms.com/intake/patient/" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">📄</span><div class="card-title" style="color:var(--amber)">Free Patient Intake Form — eForms ↗</div></div><div class="card-body">A real, printable and fillable PDF/Word patient intake form. Download and study the structure — demographics, medical history, insurance, consents. This is the gold standard layout.</div></div></a>
+      <a href="https://www.smartsheet.com/content/client-intake-form-template" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">📋</span><div class="card-title" style="color:var(--amber)">Smartsheet Intake Template Library ↗</div></div><div class="card-body">Download free intake form templates in Word, PDF, and Google Docs. Includes patient, legal, and general client versions — great for understanding how different practices structure their forms.</div></div></a>
+      <a href="https://www.jotform.com/form-templates/medical-intake-form" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">🌐</span><div class="card-title" style="color:var(--amber)">Jotform Medical Intake Templates ↗</div></div><div class="card-body">50+ free online medical intake form templates. See how digital/online forms work — the format most modern clinics now use. You can preview, customize, and understand how online intake replaces paper.</div></div></a>
+      <a href="https://www.carepatron.com/templates/patient-intake-forms" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">🏥</span><div class="card-title" style="color:var(--amber)">Carepatron — Specialty-Specific Forms ↗</div></div><div class="card-body">Download intake forms specific to mental health, pediatrics, physiotherapy, and more. See how the fields change by specialty — a mental health intake asks very different questions than a cardiology one.</div></div></a>
+    </div>
+    <div class="alert alert-amber" style="margin-top:1rem"><span class="alert-label">ASSIGNMENT</span>Download one form from eForms and one from Jotform. Complete them as if you were a new patient. Note which fields confused you — those are the same ones that will confuse real patients calling your clinic. That is exactly when they will call you for help.</div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1.5rem">
+    <button class="btn btn-outline" onclick="showPage('sched')">← Back</button>
+    <button class="btn btn-primary" onclick="showPage('docs')">Next: Documentation →</button>
+  </div>
+</div>
+</div>
+
+<!-- ===================== PAGE 3: DOCUMENTATION ===================== -->
+<div id="page-docs" class="page">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">LESSON 03 · DOCUMENTATION</div>
+    <h2 class="page-title">Documentation</h2>
+    <p class="page-desc">Accurate, timely documentation protects patients, providers, and your career. Learn the types of clinical notes, documentation standards, and how to write clearly without practising medicine.</p>
+  </div>
+
+  <!-- TYPES OF DOCUMENTATION -->
+  <div class="section">
+    <div class="section-title">Types of documentation a medical VA handles</div>
+    <div class="grid2">
+      <div class="card teal card-teal"><div class="card-title">SOAP Notes (transcription)</div><div class="card-body">Subjective, Objective, Assessment, Plan. The standard format used by providers. VAs may transcribe from dictation but never write the clinical assessment or plan themselves.</div></div>
+      <div class="card cyan card-cyan"><div class="card-title">Referral Letters</div><div class="card-body">Sent from PCP to specialist summarizing patient's reason for referral, relevant history, and current medications. VA prepares draft from template — provider reviews and signs.</div></div>
+      <div class="card amber card-amber"><div class="card-title">After-Visit Summaries (AVS)</div><div class="card-body">Given to patients after appointments. Includes diagnosis, instructions, follow-up date, and medications. VA formats and prints/sends — never edits the clinical content.</div></div>
+      <div class="card teal card-teal"><div class="card-title">Prior Authorization Requests</div><div class="card-body">Documentation sent to insurers to justify a procedure or medication. VA compiles clinical history, diagnosis codes, and supporting notes. Provider must approve before submission.</div></div>
+      <div class="card cyan card-cyan"><div class="card-title">Phone Triage Notes</div><div class="card-body">Every patient call must be documented in the EHR: who called, time, reason, what was said, and outcome. This is your legal record of the interaction.</div></div>
+      <div class="card amber card-amber"><div class="card-title">Prescription Refill Requests</div><div class="card-body">VA receives refill request, verifies patient identity and medication name/dosage in chart, routes to provider for approval. Never refill without clinical sign-off.</div></div>
+    </div>
+  </div>
+
+  <!-- SOAP NOTE -->
+  <div class="section">
+    <div class="section-title">Understanding SOAP notes — with a worked example</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">A VA may transcribe SOAP notes from audio dictation. You must understand each section so you transcribe it correctly — even if you never write the clinical parts yourself.</p>
+    <div class="grid2">
+      <div>
+        <div class="alert alert-teal" style="margin-bottom:10px"><span class="alert-label">S — SUBJECTIVE</span>What the patient reports: symptoms, complaints, duration. "Patient reports…" Written in the patient's own words. VA transcribes exactly as dictated.</div>
+        <div class="alert alert-cyan" style="margin-bottom:10px"><span class="alert-label">O — OBJECTIVE</span>Measurable findings: vitals, lab results, physical exam findings. Numbers and clinical observations. VA transcribes exactly — never rounds numbers or paraphrases.</div>
+        <div class="alert alert-amber" style="margin-bottom:10px"><span class="alert-label">A — ASSESSMENT</span>The provider's clinical diagnosis or impression. <strong style="color:#f09595">VA NEVER WRITES THIS.</strong> Transcribe only from provider dictation, word for word.</div>
+        <div class="alert alert-red"><span class="alert-label">P — PLAN</span>Treatment plan: medications, referrals, follow-ups, tests ordered. <strong style="color:#f09595">VA NEVER WRITES THIS.</strong> Transcribe only. Flag anything unclear for provider review.</div>
+      </div>
+      <div>
+        <div class="template-box">
+          <span class="section-break">SOAP NOTE EXAMPLE — PATIENT: CHIDI NWOSU</span>
+          <span class="section-break" style="color:var(--cyan)">S — SUBJECTIVE</span>
+Patient reports persistent cough for 10 days, worsening at night. Reports mild fever (self-measured 38.2°C at home). Denies chest pain or shortness of breath. No known sick contacts.
+          <span class="section-break" style="color:var(--cyan)">O — OBJECTIVE</span>
+Temp: 38.1°C · BP: 122/78 · HR: 88 · SpO2: 98% on room air. Lungs: mild bilateral crackles on auscultation. Throat: mild erythema, no exudate. No lymphadenopathy.
+          <span class="section-break" style="color:var(--amber)">A — ASSESSMENT</span>
+<span class="field">Acute bronchitis, likely viral. R/O early pneumonia.</span>
+          <span class="section-break" style="color:var(--amber)">P — PLAN</span>
+<span class="field">1. Chest X-ray ordered. 2. Supportive care: fluids, rest, honey/lemon. 3. Prescribed amoxicillin 500mg TID x 7 days if X-ray confirms bacterial infection. 4. Follow-up in 5 days or sooner if symptoms worsen.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHONE TRIAGE DOCUMENTATION -->
+  <div class="section">
+    <div class="section-title">Documenting a phone call — the right way</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">Every call with a patient must be documented. This is your legal record. "If it wasn't documented, it didn't happen."</p>
+    <div class="dodont">
+      <div class="do-col">
+        <h5>✓ GOOD DOCUMENTATION</h5>
+        <ul>
+          <li>Specific and objective: "Patient called at 10:42am reporting headache x 3 days, rated 7/10, no vision changes, taking ibuprofen with partial relief."</li>
+          <li>States the action taken: "Message sent to Dr. Adeyemi's nurse per clinic triage protocol. Patient advised to seek ER if symptoms worsen or new symptoms develop."</li>
+          <li>Documents who, what, when, outcome</li>
+          <li>Uses medical abbreviations correctly and consistently</li>
+          <li>Notes if patient declined offered action</li>
+        </ul>
+      </div>
+      <div class="dont-col">
+        <h5>✗ POOR DOCUMENTATION</h5>
+        <ul>
+          <li>"Patient called about headache. Told them to take meds." — vague, no clinical detail, no action documented</li>
+          <li>"Patient seems fine." — VA is making a clinical judgment</li>
+          <li>Missing timestamp</li>
+          <li>Copy-pasting from a previous note without updating specifics</li>
+          <li>No documentation at all — most common and most dangerous error</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="template-box" style="margin-top:1rem">
+      <span class="section-break">PHONE CALL NOTE TEMPLATE</span>
+Date/Time: <span class="field">[MM/DD/YYYY HH:MM AM/PM]</span>
+Contact Type: <span class="field">[Inbound call / Outbound call / Voicemail left]</span>
+Patient Name: <span class="field">[Full Name]</span> | DOB: <span class="field">[DOB]</span>
+Caller identity verified: <span class="field">[Yes / No — method used]</span>
+
+Reason for contact: <span class="field">[Patient's own words or brief summary]</span>
+Symptoms reported (if applicable): <span class="field">[Symptom, duration, severity 1-10, associated symptoms]</span>
+
+Action taken: <span class="field">[Message forwarded to provider / Appointment scheduled / Referred to ER / Information provided]</span>
+Patient instructions given: <span class="field">[Exact instructions told to patient]</span>
+Patient response: <span class="field">[Patient agreed / Patient declined / No answer — voicemail left]</span>
+
+Documented by: <span class="field">[VA Name, Title]</span>
+    </div>
+  </div>
+
+  <!-- REFERRAL LETTER -->
+  <div class="section">
+    <div class="section-title">Referral letter — annotated template</div>
+    <div class="template-box">
+      <span class="section-break">REFERRAL LETTER — PROVIDER LETTERHEAD</span>
+Date: <span class="field">[April 14, 2025]</span>
+
+To: <span class="field">Dr. Emeka Adeyemi, MD, FACC</span>
+Specialty: <span class="field">Cardiology</span>
+Practice: <span class="field">Lagos Heart Centre, Victoria Island</span>
+
+From: <span class="field">Dr. Ama Mensah, MD</span>
+Practice: <span class="field">Mensah Family Medicine, Ikeja</span>
+Phone: <span class="field">[Clinic phone]</span> | Fax: <span class="field">[Clinic fax]</span>
+
+RE: <span class="field">AMAKA OSEI — DOB: 03/06/1975 — MRN: 448821</span>
+
+<span class="section-break">REASON FOR REFERRAL</span>
+<span class="field">Patient referred for evaluation of exertional chest pain and dyspnea on exertion, onset approximately 3 months ago. Symptoms are progressive. Rule out coronary artery disease.</span>
+
+<span class="section-break">RELEVANT MEDICAL HISTORY</span>
+<span class="field">PMHx: Hypertension (dx 2018), Type 2 Diabetes Mellitus (dx 2020)
+Current Meds: Lisinopril 10mg OD, Metformin 500mg BD
+Allergies: Penicillin (rash), Aspirin (intolerance)
+Family Hx: Father — MI age 62</span>
+
+<span class="section-break">RECENT RESULTS</span>
+<span class="field">ECG (04/10/2025): Sinus rhythm, no acute ST changes. LDL: 4.2 mmol/L. HbA1c: 7.8%</span>
+
+<span class="section-break">REQUEST</span>
+<span class="field">Please evaluate and advise on further cardiac workup including stress test and/or echocardiogram as clinically indicated.</span>
+
+Signed: ___________________________
+<span class="field">Dr. Ama Mensah, MD</span>
+<span class="instruction">[Provider signs — VA never signs referral letters]</span>
+    </div>
+  </div>
+
+  <!-- CASE STUDY DOCS -->
+  <div class="section">
+    <div class="section-title">Case study: When documentation saved a career</div>
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-teal">CASE 04</span><span class="tag tag-teal">DOCUMENTATION BEST PRACTICE</span></div>
+      <div class="case-title">The VA Who Documented Everything</div>
+      <div class="case-section">SCENARIO</div>
+      <p style="font-size:.85rem">A patient claimed a clinic never told her about a follow-up appointment after a procedure and threatened legal action, saying "your staff gave me no instructions." The practice was concerned — if true, this was a serious failure of care.</p>
+      <div class="case-section">WHAT THE VA'S RECORDS SHOWED</div>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Phone call note: "10:15am — Outbound call to patient re: follow-up. Spoke with patient directly. Confirmed Tuesday 2pm appointment. Instructions: no strenuous activity x 48h, call immediately if fever or swelling. Patient confirmed understanding."</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>SMS confirmation log showing message sent to patient's registered number at 10:17am</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>EHR note timestamped, including VA's name and that patient verbally confirmed receipt of instructions</div></div>
+      </div>
+      <div class="alert alert-teal" style="margin-top:1rem"><span class="alert-label">OUTCOME</span>The complaint was dismissed. The documentation was the clinic's entire defense. The VA's habit of thorough, immediate documentation protected the clinic, the provider, and themselves from a legal claim.</div>
+    </div>
+  </div>
+
+  <!-- DOCUMENTATION TOOLS -->
+  <div class="section" style="border-color:rgba(250,199,75,0.25);background:rgba(250,199,75,0.04)">
+    <div class="section-title" style="color:var(--amber)">Documentation tools, EHR demos & SOAP templates</div>
+    <p style="font-size:.85rem;color:var(--slate);margin-bottom:1rem">Access real EHR systems and documentation templates. Many of these are free to try — working in a demo environment is far better than learning from a description.</p>
+    <div class="grid2">
+      <a href="https://www.open-emr.org" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">💻</span><div class="card-title" style="color:var(--amber)">OpenEMR — Free Live Demo ↗</div></div><div class="card-body">Try a real EHR system for free. Click "Try the demo" on their site to access a live demo environment with patient records, SOAP notes, scheduling, and billing. No signup required — practice right now.</div></div></a>
+      <a href="https://www.getfreed.ai/resources/patient-intake-form-template" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">📝</span><div class="card-title" style="color:var(--amber)">Freed AI — SOAP Note Templates ↗</div></div><div class="card-body">Download free SOAP note templates for multiple specialties. Includes filled examples so you can study the format before transcribing from real dictation. Also covers progress notes and after-visit summaries.</div></div></a>
+      <a href="https://sa1s3.patientpop.com/assets/docs/156907.pdf" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">📃</span><div class="card-title" style="color:var(--amber)">Real New Patient Form PDF ↗</div></div><div class="card-body">Open a real clinic's new patient intake PDF — The Medical Dock. See a complete signed consent, financial agreement, arbitration clause, and HIPAA notice in one actual document used by a real practice.</div></div></a>
+      <a href="https://simpleinteract.com/blog/patient-intake-form-template/" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">🔍</span><div class="card-title" style="color:var(--amber)">14 Specialty-Specific Form Examples ↗</div></div><div class="card-body">See exactly how intake form fields differ by specialty — orthopedics vs. mental health vs. pediatrics. This article breaks down 14 template types with field-by-field explanations of what to collect and why.</div></div></a>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1.5rem">
+    <button class="btn btn-outline" onclick="showPage('intake')">← Back</button>
+    <button class="btn btn-primary" onclick="showPage('insur')">Next: Insurance Verification →</button>
+  </div>
+</div>
+</div>
+
+<!-- ===================== PAGE 4: INSURANCE VERIFICATION ===================== -->
+<div id="page-insur" class="page">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">LESSON 04 · INSURANCE VERIFICATION</div>
+    <h2 class="page-title">Insurance Verification</h2>
+    <p class="page-desc">Insurance verification is one of the highest-impact tasks a medical VA performs. Getting it right prevents claim denials, patient billing shocks, and provider revenue loss.</p>
+  </div>
+
+  <!-- THE VERIFICATION PROCESS -->
+  <div class="section">
+    <div class="section-title">The complete 6-step verification process</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">Collect insurance information from patient</div><div class="step-body">Obtain: insurance company name, member ID, group number, policy holder name and DOB. Ask them to spell out the member ID digit by digit. Scan both sides of the card if in-person or via portal.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Access the insurer's eligibility portal or call payer line</div><div class="step-body">Most clinics use a clearinghouse (Availity, Change Healthcare) or direct payer portal. Enter patient details and run a real-time eligibility check. For urgent cases, call the payer's provider line directly.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Verify active coverage & effective dates</div><div class="step-body">Confirm the plan is active and the effective date covers the appointment date. Check termination date — coverage can lapse between employer changes or unpaid premiums.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Confirm network status & benefits</div><div class="step-body">Is the provider in-network? What is the copay? What is the remaining deductible? Are there visit limits (e.g. 20 PT visits/year)? Is a referral required for this specialty?</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Check prior authorization requirements</div><div class="step-body">Certain procedures (MRI, CT, surgery, specialty drugs) require pre-approval. Run the CPT code against the payer's prior auth list. If required, initiate the request immediately — some take 5–10 business days.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><div class="step-title">Document & communicate results</div><div class="step-body">Enter all verification details in the EHR: payer name, rep name (if called), reference number, copay confirmed, auth status. Inform the billing team of any flags. Inform the patient of their expected out-of-pocket cost.</div></div></div>
+    </div>
+  </div>
+
+  <!-- VERIFICATION CHECKLIST -->
+  <div class="section">
+    <div class="section-title">Insurance verification checklist — before every appointment</div>
+    <div class="doc-form">
+      <h4>PATIENT: <span class="field">AMAKA OSEI</span> | DATE OF SERVICE: <span class="field">04/14/2025</span> | PROVIDER: <span class="field">DR. ADEYEMI — CARDIOLOGY</span></h4>
+      <div class="doc-field"><label>Insurance Company</label><div class="line filled">BlueCross BlueShield of Nigeria</div></div>
+      <div class="doc-field"><label>Member ID</label><div class="line filled">BCB004423 ✓ (verified digit by digit)</div></div>
+      <div class="doc-field"><label>Group Number</label><div class="line filled">GRP-78921</div></div>
+      <div class="doc-field"><label>Plan Active?</label><div class="line filled" style="color:var(--teal)">YES — Active since 01/01/2023, no termination date on file</div></div>
+      <div class="doc-field"><label>Provider In-Network?</label><div class="line filled" style="color:var(--teal)">YES — Dr. Adeyemi is a preferred provider under this plan</div></div>
+      <div class="doc-field"><label>Specialist Copay</label><div class="line filled">$40.00 per visit</div></div>
+      <div class="doc-field"><label>Annual Deductible</label><div class="line filled">$500 — $312 remaining (patient has paid $188 YTD)</div></div>
+      <div class="doc-field"><label>Referral Required?</label><div class="line filled" style="color:var(--teal)">YES — Referral from Dr. Mensah on file. Auth# REF-2025-0441</div></div>
+      <div class="doc-field"><label>Prior Auth Required?</label><div class="line filled">Consult visit: No. If stress test or echo ordered: YES — initiate auth before scheduling procedure</div></div>
+      <div class="doc-field"><label>Verification Method</label><div class="line filled">Availity portal — run 04/12/2025 at 9:14am</div></div>
+      <div class="doc-field"><label>Documented by</label><div class="line filled">Fatima Ibrahim, Medical VA</div></div>
+    </div>
+  </div>
+
+  <!-- COMMON DENIAL REASONS -->
+  <div class="section">
+    <div class="section-title">Top claim denial reasons — and how to prevent them</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Denial Reason</th><th>% of Denials</th><th>Prevention</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Missing or incorrect patient information</strong></td><td class="highlight">30%</td><td>Verify member ID digit by digit. Run eligibility check before every visit.</td></tr>
+          <tr><td><strong>Service not covered under plan</strong></td><td class="highlight">22%</td><td>Check plan benefits before scheduling. Inform patient of potential out-of-pocket costs upfront.</td></tr>
+          <tr><td><strong>Prior authorization not obtained</strong></td><td class="highlight">18%</td><td>Check the payer's prior auth list for every CPT code. Never assume authorization is not needed.</td></tr>
+          <tr><td><strong>Referral required but not on file</strong></td><td class="highlight">12%</td><td>Confirm referral in EHR before the specialist appointment. Get the auth number and document it.</td></tr>
+          <tr><td><strong>Duplicate claim submitted</strong></td><td class="highlight">8%</td><td>Use your EHR's duplicate-check feature. Do not resubmit without investigating the original claim status first.</td></tr>
+          <tr><td><strong>Provider out-of-network</strong></td><td class="highlight">6%</td><td>Run network status every time — providers change networks. Do not rely on last year's information.</td></tr>
+          <tr><td><strong>Coverage lapsed / inactive at DOS</strong></td><td class="highlight">4%</td><td>Run eligibility check within 48 hours of the appointment, not weeks in advance. Plans can lapse without notice.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CASE STUDIES -->
+  <div class="section">
+    <div class="section-title">Case studies</div>
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-amber">CASE 05</span><span class="tag tag-red">PRIOR AUTH FAILURE</span></div>
+      <div class="case-title">The $4,200 MRI That Nobody Pre-Approved</div>
+      <div class="case-section">WHAT HAPPENED</div>
+      <p style="font-size:.85rem">A doctor ordered an MRI for a patient's knee injury. The scheduling VA booked the MRI for the following week without checking prior auth requirements. The scan was performed, the patient was billed, and the insurer denied the entire $4,200 claim because prior authorization was never obtained.</p>
+      <div class="case-section">CONSEQUENCES</div>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon ci-bad">✗</div><div>The clinic had to write off $4,200 as a bad debt — the patient couldn't pay, insurance wouldn't cover it</div></div>
+        <div class="check-item"><div class="check-icon ci-bad">✗</div><div>The patient was shocked and distressed — they thought they were covered</div></div>
+        <div class="check-item"><div class="check-icon ci-bad">✗</div><div>The VA received a formal disciplinary warning</div></div>
+      </div>
+      <div class="case-section">CORRECT PROCESS</div>
+      <div class="checklist">
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Before scheduling any imaging: check the payer's prior auth requirement list for the CPT code (e.g. MRI knee = CPT 73721)</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>If prior auth is required: submit the authorization request with the clinical notes supporting medical necessity</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Only schedule the procedure after receiving written authorization with an auth number</div></div>
+        <div class="check-item"><div class="check-icon ci-ok">✓</div><div>Document the auth number in the EHR and on the order</div></div>
+      </div>
+    </div>
+
+    <div class="case-study">
+      <div class="case-meta"><span class="tag tag-teal">CASE 06</span><span class="tag tag-teal">VERIFICATION EXCELLENCE</span></div>
+      <div class="case-title">The VA Who Saved a Patient from a $2,000 Bill</div>
+      <div class="case-section">SCENARIO</div>
+      <p style="font-size:.85rem">A patient called to schedule a sleep study with a specialist. The VA ran a routine eligibility check and discovered: (1) the specialist was out-of-network, (2) the sleep study required prior auth, and (3) the patient's deductible of $1,500 had not yet been met — meaning the patient would pay the first $1,500 out-of-pocket.</p>
+      <div class="case-section">WHAT THE VA DID</div>
+      <div class="convo">
+        <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Ms. Taiwo, before I confirm this appointment I want to share some important cost information I found during our insurance check. Dr. Balogun is actually out-of-network on your current plan, and your plan also requires prior authorization for sleep studies. With your remaining deductible, your out-of-pocket for this visit could be up to $2,000. Would you like me to find an in-network sleep specialist instead, which would reduce your cost significantly?<div class="ann">↳ Proactive, transparent, patient-centered — prevents billing shock and builds trust</div></div></div></div>
+        <div class="msg"><div class="avatar av-pt">PT</div><div><div class="bubble bub-pt">Oh wow, I had no idea. Yes please — can you find me someone in-network?</div></div></div>
+        <div class="msg"><div class="avatar av-va">VA</div><div><div class="bubble bub-va">Absolutely. I've found Dr. Chukwu, who specializes in sleep disorders and is fully in-network with your plan. A visit would be covered at your $50 specialist copay after your deductible is met. I'll also initiate the prior auth so we have approval before you go. Does Thursday work?<div class="ann">↳ Solves the problem completely, handles the prior auth proactively, gives exact cost</div></div></div></div>
+      </div>
+      <div class="alert alert-teal"><span class="alert-label">LESSON</span>A thorough verification check is a service to the patient, not just an administrative task. VAs who proactively share cost information build deep patient loyalty and prevent billing disputes.</div>
+    </div>
+  </div>
+
+  <!-- INSURANCE TOOLS -->
+  <div class="section" style="border-color:rgba(250,199,75,0.25);background:rgba(250,199,75,0.04)">
+    <div class="section-title" style="color:var(--amber)">Insurance & billing tools used in real medical VA work</div>
+    <div class="grid2">
+      <a href="https://www.availity.com" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">🔒</span><div class="card-title" style="color:var(--amber)">Availity — Insurance Eligibility Portal ↗</div></div><div class="card-body">The most widely used clearinghouse for real-time insurance eligibility checks in the US. Free for providers to use. Register and explore their portal to understand how VAs verify coverage before appointments.</div></div></a>
+      <a href="https://tebra.com" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">💳</span><div class="card-title" style="color:var(--amber)">Tebra (formerly Kareo) ↗</div></div><div class="card-body">Leading EHR + billing platform built for small practices. Includes scheduling, insurance verification, claim submission, and patient billing. Free demo available — see exactly what a medical VA's daily dashboard looks like.</div></div></a>
+      <a href="https://www.cms.gov/medicare/coding-billing/icd-10-codes" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">🗂️</span><div class="card-title" style="color:var(--amber)">CMS ICD-10 Code Lookup ↗</div></div><div class="card-body">The official CMS database of all ICD-10 diagnosis codes. Bookmark this — you will use it constantly. Every claim needs the correct ICD-10 code or it gets denied. Free, authoritative, and always up to date.</div></div></a>
+      <a href="https://www.cms.gov/medicare/coding-billing/physician-fee-schedule/search" target="_blank" style="text-decoration:none"><div class="card amber" style="cursor:pointer" onmouseover="this.style.borderColor='rgba(250,199,75,0.6)'" onmouseout="this.style.borderColor='rgba(250,199,75,0.25)'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:16px">💰</span><div class="card-title" style="color:var(--amber)">CMS Physician Fee Schedule — CPT Codes ↗</div></div><div class="card-body">Look up CPT (procedure) codes and their Medicare reimbursement rates. Critical for prior auth requests and verifying whether a procedure requires pre-approval. Free government tool.</div></div></a>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;margin-top:1.5rem">
+    <button class="btn btn-outline" onclick="showPage('docs')">← Back</button>
+    <button class="btn btn-primary" onclick="showPage('quiz')">Take All Quizzes →</button>
+  </div>
+</div>
+</div>
+
+<!-- ===================== PAGE 5: QUIZZES ===================== -->
+<div id="page-quiz" class="page">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">MODULE 2 · QUIZ BANK</div>
+    <h2 class="page-title">Practice Quizzes</h2>
+    <p class="page-desc">10 questions per lesson — with detailed answer explanations. Complete all four to earn your Module 2 certificate.</p>
+  </div>
+
+  <!-- QUIZ TABS -->
+  <div style="display:flex;gap:0;background:var(--navy2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.5rem">
+    <div id="qtab0" class="qtab active" onclick="showQuiz(0)" style="flex:1;text-align:center;padding:12px 8px;font-size:12px;color:var(--teal);cursor:pointer;border-bottom:2px solid var(--teal);background:rgba(0,212,170,0.06);transition:all .15s">Scheduling</div>
+    <div id="qtab1" class="qtab" onclick="showQuiz(1)" style="flex:1;text-align:center;padding:12px 8px;font-size:12px;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;border-right:1px solid var(--border)">Intake Forms</div>
+    <div id="qtab2" class="qtab" onclick="showQuiz(2)" style="flex:1;text-align:center;padding:12px 8px;font-size:12px;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;border-right:1px solid var(--border)">Documentation</div>
+    <div id="qtab3" class="qtab" onclick="showQuiz(3)" style="flex:1;text-align:center;padding:12px 8px;font-size:12px;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s">Ins. Verification</div>
+  </div>
+
+  <div id="qpanel0" class="panel active"></div>
+  <div id="qpanel1" class="panel"></div>
+  <div id="qpanel2" class="panel"></div>
+  <div id="qpanel3" class="panel"></div>
+
+</div>
+</div>
+
+<!-- ===================== PAGE 6: TOOLS & RESOURCES ===================== -->
+<div id="page-tools" class="page">
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag" style="color:var(--amber);background:rgba(250,199,75,0.1);border-color:rgba(250,199,75,0.25)">TOOLS & RESOURCES · MODULE 2</div>
+    <h2 class="page-title">Tools, Links & Practice Resources</h2>
+    <p class="page-desc">Every tool, template, and real-world resource a medical VA needs — curated, categorized, and ready to open. Bookmark this page.</p>
+  </div>
+
+  <!-- SCHEDULING TOOLS -->
+  <div class="section">
+    <div class="section-title">Appointment scheduling tools</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Best For</th><th>Cost</th><th>HIPAA?</th><th>Link</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Calendly</strong></td><td>Simple booking links, meeting scheduling, VA-to-patient coordination</td><td class="td-good">Free plan available · Paid from $10/mo</td><td class="td-note">Limited (no BAA on free)</td><td><a href="https://calendly.com" target="_blank" style="color:var(--teal)">calendly.com ↗</a></td></tr>
+          <tr><td><strong>Acuity Scheduling</strong></td><td>Medical clinics needing intake forms, payments, reminders, multi-provider</td><td class="td-note">From $20/mo · HIPAA plan $61/mo</td><td class="td-good">Yes (BAA on HIPAA plan)</td><td><a href="https://acuityscheduling.com" target="_blank" style="color:var(--teal)">acuityscheduling.com ↗</a></td></tr>
+          <tr><td><strong>Jane App</strong></td><td>Allied health &amp; wellness clinics — scheduling + charting + billing in one</td><td class="td-note">From $38 CAD/mo per practitioner</td><td class="td-good">Yes (PIPEDA &amp; HIPAA compliant)</td><td><a href="https://jane.app" target="_blank" style="color:var(--teal)">jane.app ↗</a></td></tr>
+          <tr><td><strong>Google Calendar</strong></td><td>Basic appointment tracking for small practices or solo providers</td><td class="td-good">Free</td><td class="td-bad">No (not HIPAA)</td><td><a href="https://calendar.google.com" target="_blank" style="color:var(--teal)">calendar.google.com ↗</a></td></tr>
+          <tr><td><strong>SimplyBook.me</strong></td><td>Multi-provider clinics, custom branded booking pages</td><td class="td-note">Free (50 bookings/mo) · Paid from $9.50/mo</td><td class="td-good">HIPAA-ready options available</td><td><a href="https://simplybook.me" target="_blank" style="color:var(--teal)">simplybook.me ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EHR TOOLS -->
+  <div class="section">
+    <div class="section-title">EHR / EMR systems — learn & practice</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>System</th><th>Description</th><th>Cost</th><th>Demo / Trial</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OpenEMR</strong></td><td>World's most popular free, open-source EHR. Scheduling, SOAP notes, billing, e-prescriptions. ONC certified.</td><td class="td-good">100% Free</td><td><a href="https://www.open-emr.org" target="_blank" style="color:var(--teal)">Try live demo ↗</a></td></tr>
+          <tr><td><strong>Practice Fusion</strong></td><td>Cloud EHR for small practices. Smart charting, e-prescriptions, appointment manager, 600+ lab integrations.</td><td class="td-note">From $199/provider/mo</td><td><a href="https://www.practicefusion.com" target="_blank" style="color:var(--teal)">Free 14-day trial ↗</a></td></tr>
+          <tr><td><strong>Tebra (Kareo)</strong></td><td>EHR + billing + scheduling for independent practices. 150+ charting templates. VA-friendly interface.</td><td class="td-note">From $349/provider/mo</td><td><a href="https://tebra.com" target="_blank" style="color:var(--teal)">Free demo ↗</a></td></tr>
+          <tr><td><strong>Jane App</strong></td><td>All-in-one for health &amp; wellness. Scheduling, clinical notes, insurance billing, telehealth. Created by clinic owners.</td><td class="td-note">From $38 CAD/mo</td><td><a href="https://jane.app" target="_blank" style="color:var(--teal)">Free trial ↗</a></td></tr>
+          <tr><td><strong>eClinicalWorks</strong></td><td>Enterprise EHR used by large practices. Cloud-based, free initial training for under 9 providers, webinars.</td><td class="td-note">Contact for pricing</td><td><a href="https://www.eclinicalworks.com" target="_blank" style="color:var(--teal)">Request demo ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-teal" style="margin-top:1rem"><span class="alert-label">START HERE</span>Go to <a href="https://www.open-emr.org" target="_blank" style="color:var(--teal);text-decoration:underline">open-emr.org</a> and click "Try it now" — you get a fully functional live EHR demo with real patient data. Navigate to the scheduling module and try booking a fake appointment. This is the closest thing to on-the-job EHR training you can get for free.</div>
+  </div>
+
+  <!-- INTAKE FORM EXAMPLES -->
+  <div class="section">
+    <div class="section-title">Patient intake form examples — open and study these</div>
+    <div class="grid2">
+      <div>
+        <div style="font-size:.78rem;font-family:var(--mono);color:var(--teal);margin-bottom:.8rem;letter-spacing:.06em">DOWNLOADABLE PDF/WORD FORMS</div>
+        <div class="checklist">
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://eforms.com/intake/patient/" target="_blank" style="color:var(--teal);font-weight:600">eForms — Free Patient Intake Form</a><br><span style="font-size:.78rem;color:var(--slate)">PDF, Word, and Google Docs versions. Standard demographics + medical history + insurance + consent. The benchmark form.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://www.smartsheet.com/content/client-intake-form-template" target="_blank" style="color:var(--teal);font-weight:600">Smartsheet — Multiple Template Types</a><br><span style="font-size:.78rem;color:var(--slate)">Patient intake, legal, tax, real estate — compare how different industries structure intake differently. Download the patient template in Excel or Word.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://sa1s3.patientpop.com/assets/docs/156907.pdf" target="_blank" style="color:var(--teal);font-weight:600">The Medical Dock — Real Clinic PDF</a><br><span style="font-size:.78rem;color:var(--slate)">A real clinic's actual new patient form including signed financial agreement, arbitration clause, and HIPAA notice. Study a live document.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://carecloud.com/continuum/free-patient-intake-form/" target="_blank" style="color:var(--teal);font-weight:600">Carecloud — Practice Management Intake</a><br><span style="font-size:.78rem;color:var(--slate)">Free patient intake form PDF from a clinic management software provider. Clean layout used by real practices.</span></div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.78rem;font-family:var(--mono);color:var(--cyan);margin-bottom:.8rem;letter-spacing:.06em">ONLINE / DIGITAL FORM BUILDERS</div>
+        <div class="checklist">
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.jotform.com/form-templates/medical-intake-form" target="_blank" style="color:var(--cyan);font-weight:600">Jotform — 50+ Medical Intake Templates</a><br><span style="font-size:.78rem;color:var(--slate)">Preview and customize free online forms. See how digital intake replaces paper — the format most modern clinics now use. Understand the patient-facing experience.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://simpleinteract.com/blog/patient-intake-form-template/" target="_blank" style="color:var(--cyan);font-weight:600">Simple Interact — 14 Specialty Forms</a><br><span style="font-size:.78rem;color:var(--slate)">Orthopedic, mental health, pediatric, physical therapy — see how specialty changes which fields are required. Excellent for understanding what to look for during intake review.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.carepatron.com/templates/patient-intake-forms" target="_blank" style="color:var(--cyan);font-weight:600">Carepatron — Specialty-Specific Downloads</a><br><span style="font-size:.78rem;color:var(--slate)">Download specialty intake templates for mental health, physiotherapy, acupuncture, nutrition, and more. All free.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.getfreed.ai/resources/patient-intake-form-template" target="_blank" style="color:var(--cyan);font-weight:600">Freed AI — HIPAA-Compliant Intake Guide</a><br><span style="font-size:.78rem;color:var(--slate)">Explains every section of a HIPAA-compliant intake form. Free downloadable PDF template included. Also covers how AI scribes are integrating with intake workflows.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOCUMENTATION & CODING RESOURCES -->
+  <div class="section">
+    <div class="section-title">Documentation, coding & billing references</div>
+    <div class="grid2">
+      <div class="card teal card-teal">
+        <div class="card-title">Official clinical coding</div>
+        <div class="checklist" style="margin-top:.5rem">
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://www.cms.gov/medicare/coding-billing/icd-10-codes" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">CMS ICD-10 Code Lookup</a><br><span style="font-size:.75rem;color:var(--slate)">Official diagnosis code database. Bookmark this — you need it for every claim.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://www.cms.gov/medicare/coding-billing/physician-fee-schedule/search" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">CMS CPT / Physician Fee Schedule</a><br><span style="font-size:.75rem;color:var(--slate)">Look up procedure codes and Medicare rates. Critical for prior auth requests.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://www.aapc.com/resources/medical-coding" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">AAPC Medical Coding Resources</a><br><span style="font-size:.75rem;color:var(--slate)">Free articles, code explanations, and training from the largest medical coding association.</span></div></div>
+        </div>
+      </div>
+      <div class="card cyan card-cyan">
+        <div class="card-title">SOAP notes & documentation templates</div>
+        <div class="checklist" style="margin-top:.5rem">
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.getfreed.ai/resources/patient-intake-form-template" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">Freed AI — Free SOAP Templates</a><br><span style="font-size:.75rem;color:var(--slate)">Downloadable SOAP note templates for multiple specialties with filled examples.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.open-emr.org" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">OpenEMR Demo — Practice SOAP Notes</a><br><span style="font-size:.75rem;color:var(--slate)">Use the live EHR demo to practice creating encounter notes in a real system.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.hipaajournal.com/hipaa-compliance-checklist/" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">HIPAA Journal — Documentation Compliance</a><br><span style="font-size:.75rem;color:var(--slate)">HIPAA compliance checklist for documentation, breach notification, and VA responsibilities.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSURANCE VERIFICATION TOOLS -->
+  <div class="section">
+    <div class="section-title">Insurance verification & eligibility tools</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>What It Does</th><th>Cost</th><th>Link</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Availity</strong></td><td>Real-time insurance eligibility checks, claims submission, prior auth tracking. Used by 99% of US providers.</td><td class="td-good">Free for providers</td><td><a href="https://www.availity.com" target="_blank" style="color:var(--teal)">availity.com ↗</a></td></tr>
+          <tr><td><strong>Change Healthcare</strong></td><td>Clearinghouse for claims, eligibility verification, remittance. Major enterprise-level platform.</td><td class="td-note">Subscription — contact for pricing</td><td><a href="https://www.changehealthcare.com" target="_blank" style="color:var(--teal)">changehealthcare.com ↗</a></td></tr>
+          <tr><td><strong>CMS Eligibility Tool</strong></td><td>Official Medicare &amp; Medicaid eligibility verification. Free government resource.</td><td class="td-good">Free</td><td><a href="https://www.cms.gov/medicare/eligibility-and-enrollment" target="_blank" style="color:var(--teal)">cms.gov ↗</a></td></tr>
+          <tr><td><strong>Tebra / Kareo</strong></td><td>Insurance verification built into the EHR — verify eligibility with one click from the patient record.</td><td class="td-note">Included in subscription</td><td><a href="https://tebra.com" target="_blank" style="color:var(--teal)">tebra.com ↗</a></td></tr>
+          <tr><td><strong>CAQH ProView</strong></td><td>Provider credentialing database used by insurers to verify provider credentials — important for network status checks.</td><td class="td-good">Free for providers</td><td><a href="https://proview.caqh.org" target="_blank" style="color:var(--teal)">proview.caqh.org ↗</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HIPAA & COMPLIANCE -->
+  <div class="section">
+    <div class="section-title">HIPAA, compliance & professional development</div>
+    <div class="grid3">
+      <div class="card red card-red">
+        <div class="card-title">HIPAA Resources</div>
+        <div class="checklist" style="margin-top:.5rem">
+          <div class="check-item"><div class="check-icon ci-bad" style="background:rgba(226,75,74,0.15);color:#f09595">↗</div><div><a href="https://www.hhs.gov/hipaa/for-professionals/index.html" target="_blank" style="color:#f09595;font-size:.82rem;font-weight:600">HHS HIPAA Official Site</a><br><span style="font-size:.75rem;color:var(--slate)">The authoritative source for all HIPAA regulations, FAQs, and breach notifications.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-bad" style="background:rgba(226,75,74,0.15);color:#f09595">↗</div><div><a href="https://www.hipaajournal.com" target="_blank" style="color:#f09595;font-size:.82rem;font-weight:600">HIPAA Journal</a><br><span style="font-size:.75rem;color:var(--slate)">News, compliance guides, breach database, and practical checklists for healthcare staff.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-bad" style="background:rgba(226,75,74,0.15);color:#f09595">↗</div><div><a href="https://www.hhs.gov/hipaa/for-professionals/privacy/training/index.html" target="_blank" style="color:#f09595;font-size:.82rem;font-weight:600">HHS Free HIPAA Training</a><br><span style="font-size:.75rem;color:var(--slate)">Official free training modules from the US Department of Health for healthcare workers.</span></div></div>
+        </div>
+      </div>
+      <div class="card teal card-teal">
+        <div class="card-title">Communication & remote work</div>
+        <div class="checklist" style="margin-top:.5rem">
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://slack.com" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">Slack — Team Communication</a><br><span style="font-size:.75rem;color:var(--slate)">Used by most remote VA employers. Free plan available. Practice managing channels and threads.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://zoom.us" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">Zoom — Video & Telehealth</a><br><span style="font-size:.75rem;color:var(--slate)">Used for team meetings and telehealth coordination. Free plan available. Healthcare BAA available.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok">↗</div><div><a href="https://spruce.health" target="_blank" style="color:var(--teal);font-size:.82rem;font-weight:600">Spruce Health — HIPAA Messaging</a><br><span style="font-size:.75rem;color:var(--slate)">HIPAA-compliant messaging and phone platform for medical VAs. Widely used for secure patient communication.</span></div></div>
+        </div>
+      </div>
+      <div class="card cyan card-cyan">
+        <div class="card-title">Career & certification</div>
+        <div class="checklist" style="margin-top:.5rem">
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.aapc.com" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">AAPC — Medical Coding Certification</a><br><span style="font-size:.75rem;color:var(--slate)">The world's largest medical coding &amp; billing association. CPC and CPMA certifications for billing VAs.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://www.ahima.org" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">AHIMA — Health Information</a><br><span style="font-size:.75rem;color:var(--slate)">American Health Information Management Association. RHIT and CCS certifications for medical records specialists.</span></div></div>
+          <div class="check-item"><div class="check-icon ci-ok" style="background:rgba(56,189,248,0.15);color:var(--cyan)">↗</div><div><a href="https://vaaglobal.tech" target="_blank" style="color:var(--cyan);font-size:.82rem;font-weight:600">VAA Global — Your Certification</a><br><span style="font-size:.75rem;color:var(--slate)">Complete this course to earn your VAA Global internationally recognized medical VA certification.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK REFERENCE CARD -->
+  <div class="section" style="border-color:rgba(0,212,170,0.3)">
+    <div class="section-title">Quick-reference bookmark list — save this</div>
+    <div class="template-box">
+      <span class="section-break">MEDICAL VA ESSENTIAL BOOKMARKS</span>
+
+<span class="section-break" style="color:var(--amber)">SCHEDULING</span>
+Calendly (free booking tool)         → <span class="field">calendly.com</span>
+Acuity Scheduling (medical-grade)    → <span class="field">acuityscheduling.com</span>
+Jane App (clinic all-in-one)         → <span class="field">jane.app</span>
+
+<span class="section-break" style="color:var(--amber)">EHR PRACTICE</span>
+OpenEMR live demo (free)             → <span class="field">open-emr.org</span>
+Practice Fusion (free trial)         → <span class="field">practicefusion.com</span>
+Tebra/Kareo (demo available)         → <span class="field">tebra.com</span>
+
+<span class="section-break" style="color:var(--amber)">INTAKE FORMS</span>
+eForms patient intake PDF            → <span class="field">eforms.com/intake/patient</span>
+Jotform medical templates            → <span class="field">jotform.com/form-templates/medical-intake-form</span>
+Real clinic PDF example              → <span class="field">sa1s3.patientpop.com/assets/docs/156907.pdf</span>
+
+<span class="section-break" style="color:var(--amber)">CODING & BILLING</span>
+ICD-10 code lookup (official)        → <span class="field">cms.gov/medicare/coding-billing/icd-10-codes</span>
+CPT physician fee schedule           → <span class="field">cms.gov/medicare/coding-billing/physician-fee-schedule</span>
+AAPC coding resources (free)         → <span class="field">aapc.com/resources/medical-coding</span>
+
+<span class="section-break" style="color:var(--amber)">INSURANCE VERIFICATION</span>
+Availity eligibility portal          → <span class="field">availity.com</span>
+CAQH provider credentialing          → <span class="field">proview.caqh.org</span>
+CMS Medicare eligibility             → <span class="field">cms.gov/medicare/eligibility-and-enrollment</span>
+
+<span class="section-break" style="color:var(--amber)">HIPAA & COMPLIANCE</span>
+HHS official HIPAA site              → <span class="field">hhs.gov/hipaa</span>
+HIPAA Journal (practical guides)     → <span class="field">hipaajournal.com</span>
+HHS free HIPAA training              → <span class="field">hhs.gov/hipaa/for-professionals/privacy/training</span>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-start;margin-top:1.5rem">
+    <button class="btn btn-outline" onclick="showPage('quiz')">← Back to Quizzes</button>
+  </div>
+</div>
+</div>
+
+<script>
+const PAGES = ['sched','intake','docs','insur','quiz','tools'];
+const QUIZ_DATA = [
+  // Quiz 0: Scheduling
+  [
+    {q:"A patient calls reporting 'crushing chest pressure and pain shooting down my left arm.' What is the correct VA response?",opts:["Schedule an urgent same-day appointment with the cardiologist","Ask them to take aspirin and call back if symptoms worsen","Do not schedule — redirect to call 911 or go to the ER immediately","Transfer to the on-call nurse and ask them to assess"],a:2,exp:"Classic cardiac emergency symptoms (crushing chest pain + left arm radiation) are life-threatening. A VA must NEVER schedule an appointment — immediately direct the patient to call 911 or proceed to the ER. Time is critical; minutes matter in a heart attack."},
+    {q:"When offering appointment slots, the 'two-choice rule' means:",opts:["Always give two providers for the patient to choose from","Offer exactly two specific time slots rather than asking 'when are you free?'","Give both a morning and afternoon option on the same day only","The patient must choose twice — first the day, then the time"],a:1,exp:"The two-choice rule reduces decision fatigue for patients and keeps calls efficient. 'I have Tuesday at 10am or Thursday at 2pm — which works better?' is far more effective than open-ended questions that can lead to lengthy back-and-forth."},
+    {q:"Before booking a specialist appointment, a VA must always confirm:",opts:["That the specialist has a good online review rating","A referral is on file and insurance prior auth is obtained if required","The patient's preferred language and communication style","The patient's preferred specialist by name"],a:1,exp:"For specialist bookings, you must verify two things: (1) a valid referral from the PCP is in the system, and (2) whether the insurer requires prior authorization for that specialty visit. Missing either can result in a denied claim or the patient being billed entirely."},
+    {q:"A new patient calls to book their first appointment. Compared to an established patient follow-up, what is different?",opts:["New patients always need a specialist referral first","New patients require longer appointment slots (45–60 min vs 15–20 min) and intake paperwork sent in advance","New patients must pay upfront before the appointment is confirmed","There is no difference — all appointments are booked the same way"],a:1,exp:"New patient appointments are significantly longer because the provider needs to take a full history and establish care. They also require intake paperwork (demographics, medical history, consent forms) to be sent and ideally completed before arrival. Booking them into a short follow-up slot creates clinical and operational problems."},
+    {q:"After confirming an appointment, which of the following must a VA always do before ending the call?",opts:["Ask the patient to rate their experience from 1 to 10","Verbally repeat: date, time, provider, location/link, and any prep instructions","Offer the patient a follow-up appointment as well","Note in the chart that the patient sounded satisfied"],a:1,exp:"The verbal confirmation summary prevents miscommunication, reduces no-shows, and ensures patients arrive prepared. It must include: date, time, provider name, location (or telehealth link), and any preparation requirements (fasting, medication hold, bringing insurance card, arriving early for paperwork)."},
+    {q:"A patient calls 2 hours before their appointment to cancel. What should the VA do?",opts:["Inform them of the cancellation fee and end the call","Document the cancellation in the EHR with timestamp and reason, and offer to reschedule","Simply delete the appointment from the schedule","Do nothing — the system auto-cancels"],a:1,exp:"Every cancellation must be documented in the EHR with the exact time, reason given, and what was offered. Always attempt to reschedule — a patient who cancels but isn't offered a new appointment often doesn't return. For clinical follow-ups, flag the cancellation to the provider."},
+    {q:"What is the purpose of a reminder call 48 hours before an appointment?",opts:["To collect the copay payment in advance","To confirm attendance, allow last-minute rescheduling, and reduce no-shows","To review the patient's medical history over the phone","To verify insurance eligibility for the first time"],a:1,exp:"No-shows cost clinics significant revenue and can delay patient care. A 48-hour reminder call serves three purposes: confirms the patient intends to come, offers a chance to reschedule if needed (opening the slot for another patient), and reinforces any pre-visit instructions. This process measurably reduces no-show rates."},
+    {q:"A 4-year-old patient has had a high fever for 3 days. The parent calls requesting an appointment. What is the VA's correct approach?",opts:["Schedule a standard follow-up for the next available day","Book a same-day urgent slot and flag it as urgent in the chart notes for the clinical team","Advise the parent to go to a pharmacy for fever medication","Tell the parent to go to the ER — all fever cases in children are emergencies"],a:1,exp:"A high fever persisting more than 48–72 hours in a young child needs same-day clinical assessment — it's urgent but not necessarily an emergency. Book the same-day slot, note 'URGENT: 4y/o, high fever x3 days' in the appointment notes so the nursing team is prepared when they triage before the doctor sees the child."},
+    {q:"Which type of appointment typically requires the longest time slot?",opts:["Established patient prescription refill discussion","Annual wellness exam for an established patient","Mental health intake (initial assessment)","Urgent same-day visit"],a:2,exp:"A mental health initial intake is typically 60 minutes because it involves a comprehensive psychiatric and psychosocial history, risk assessment, treatment goal setting, and often multiple standardized assessment tools (PHQ-9, GAD-7, etc.). Booking insufficient time for these appointments is a common and damaging scheduling error."},
+    {q:"A patient says they have been referred by Dr. Mensah to see a cardiologist, but when you check the EHR, there is no referral on file. What do you do?",opts:["Book the appointment anyway since the patient verbally confirmed the referral","Politely explain you cannot book without the referral, then contact Dr. Mensah's office to obtain it before scheduling","Tell the patient their doctor made a mistake and they need to call back","Send the patient directly to the cardiology department in person"],a:1,exp:"Never schedule a referral-required specialist visit without confirming the referral is actually in the system. Verbally mentioning one isn't enough — you need the documented referral and (if required) the authorization number. Contact the referring provider's office, get the referral faxed or transmitted, then schedule."}
+  ],
+  // Quiz 1: Intake Forms
+  [
+    {q:"Which section of a new patient intake form is MOST critical for patient safety?",opts:["Emergency contact information","Known drug allergies and current medications","Preferred appointment reminder method","Employment and occupation"],a:1,exp:"Allergies and current medications are life-critical. A prescribing physician who doesn't know a patient is allergic to penicillin, or who doesn't see their current medication list, risks serious drug interactions or dangerous prescribing errors. This is why these fields must always be completed and verified."},
+    {q:"A patient's HIPAA Privacy Notice form is not signed when they arrive. What should happen?",opts:["Proceed with the appointment — you can get the signature afterward","Ask them to sign it before the appointment begins — services cannot be rendered without it","Verbally acknowledge their privacy rights and document that as sufficient","Only require the signature if the patient requests it"],a:1,exp:"The HIPAA Privacy Notice must be signed before services are rendered — this is a legal requirement, not optional. It documents that the patient was informed of their rights regarding their health information. Providing care before it's signed exposes the clinic to a HIPAA compliance violation."},
+    {q:"A patient is unsure about the dosage of one of their medications during intake. What should the VA do?",opts:["Leave the medication field blank","Guess based on common dosages for that drug type","Write 'Patient unsure of dosage — confirm with pharmacy or referring provider' and flag for clinical staff","Ask the patient to come back with the information another day"],a:2,exp:"Never guess clinical information, and never leave it blank without flagging it. The correct approach is to note what the patient does know ('takes lisinopril — dose unknown'), document that it needs verification, and alert the clinical team so they can confirm with the pharmacy or referring provider before the appointment."},
+    {q:"What is the risk of creating a duplicate patient record in the EHR?",opts:["It takes extra time to delete","The patient may be billed twice but there's no clinical risk","Split medical history creates clinical risk (missed allergies/meds) and billing errors including potential medication duplication","The system will automatically merge them so it doesn't matter"],a:2,exp:"A duplicate record means a patient has two separate charts. Critical information — allergies, medications, past diagnoses — may exist in one chart but not the other. A provider seeing only one chart may prescribe a medication the patient is allergic to, or duplicate a prescription. Always search name + DOB before creating any new record."},
+    {q:"Why must a VA scan both sides of a patient's insurance card?",opts:["The card number is only on the back","Both sides contain critical information: the front has member ID and insurer name, the back has the claims address, provider phone line, and sometimes the group number","It's simply clinic policy with no functional reason","Only the back is needed for billing — the front is for patient reference"],a:1,exp:"The front of an insurance card has the member ID, insurer name, and plan type. The back typically has the billing address, provider services number, and claims submission information. Missing the back means the billing team may not have the correct address to submit claims, causing denials."},
+    {q:"A patient's emergency contact field is blank on their intake form. How should this be handled?",opts:["It's optional — skip it and proceed","Flag it for the next visit","Ask the patient directly before they see the doctor: 'And who should we contact in case of an emergency?'","Ask the patient to fill it in themselves on a paper form"],a:2,exp:"Emergency contact is not optional in a real clinical setting. It's essential for contacting family during emergencies, especially if the patient is incapacitated. The VA should gather it conversationally during the intake verification: 'Just one more thing — who should we contact if needed?'"},
+    {q:"After scanning an insurance card, a VA should immediately:",opts:["File the scanned image and proceed with booking","Run a real-time eligibility check to verify the plan is active and the member ID is correct","Call the patient's employer to verify employment","Print a copy of the card for the patient's paper file"],a:1,exp:"Scanning the card is only step one. The real-time eligibility check verifies: (1) the plan is currently active, (2) the member ID is valid, (3) what benefits are covered, and (4) any deductible or copay amounts. Insurance can lapse between visits — always run the eligibility check, not just the card scan."},
+    {q:"A patient reports no known drug allergies. How should this be documented?",opts:["Leave the allergies field blank","Write 'None'","Write 'NKDA' (No Known Drug Allergies)","Don't document it — only positive allergy findings need recording"],a:2,exp:"'NKDA' (No Known Drug Allergies) is the clinical standard for documenting the absence of known allergies. It signals that the question was asked and the answer was 'none' — which is different from the field simply being empty (where it's unclear if the question was asked). Always document NKDA explicitly."},
+    {q:"During a phone intake, a patient mentions their address has changed since their last visit. What must the VA do?",opts:["Note it on a sticky note for the front desk to update later","Update the address immediately in the EHR and verify any other demographic fields that may need updating","Inform the patient they'll need to update it in writing at their next visit","Do nothing — addresses are not critical information"],a:1,exp:"Updated demographic information must be entered in the EHR immediately. An incorrect address means appointment reminders and medical correspondence (including lab results) go to the wrong location. Address updates also affect certain insurance plan requirements tied to geographic service areas."},
+    {q:"A signed Release of Information (ROI) form is on file for a patient's sister. The patient's brother calls requesting medical records. Can you share them?",opts:["Yes — immediate family members all have automatic access","Yes — if the sister can consent on behalf of the family","No — the ROI specifically names the sister; the brother has no authorization unless a separate ROI naming him is signed","Only if the brother can verify the patient's date of birth"],a:2,exp:"A Release of Information form is specific to the person named. Authorization does not extend to other family members, even close ones. The brother calling does not have access unless a separate, signed ROI specifically naming him is on file. Sharing without this is a HIPAA violation."}
+  ],
+  // Quiz 2: Documentation
+  [
+    {q:"In a SOAP note, which section does a medical VA never write themselves?",opts:["Subjective — patient's reported symptoms","Objective — vital signs and measurable findings","Assessment and Plan — clinical diagnosis and treatment decisions","None — a VA writes the entire SOAP note"],a:2,exp:"The Assessment and Plan sections require clinical judgment — diagnosing a condition and deciding on treatment. These are exclusively the provider's responsibility. A VA may transcribe the A and P from audio dictation, but must never write, infer, or assume these sections. Doing so constitutes practicing medicine without a license."},
+    {q:"A patient calls at 11:05am reporting severe lower back pain. You forward a message to the nurse. Which is the best documentation?",opts:["'Patient called re: back pain. Message sent.'","'11:05am — Inbound call, patient reporting severe lower back pain (onset unclear). Message forwarded to triage nurse per protocol. Patient advised to call 911 if pain becomes severe, unbearable, or is accompanied by difficulty breathing.'","'Patient seems uncomfortable. Nurse called.'","'11:05 — Back pain complaint. Noted.'"],a:1,exp:"Good clinical documentation captures: timestamp, who called, exact complaint with relevant details, action taken, and instructions given to the patient. Vague notes like 'patient called re: back pain' are medico-legally dangerous — they don't record what was assessed, what action was taken, or what the patient was told."},
+    {q:"What does 'if it wasn't documented, it didn't happen' mean in a healthcare context?",opts:["Documentation is only needed for serious medical events","In medical and legal terms, undocumented actions are treated as if they never occurred, regardless of what actually happened","It means VAs must document everything, even personal conversations","It is a saying only — documentation is optional for administrative tasks"],a:1,exp:"This principle is the foundation of clinical and medico-legal practice. In litigation, audits, insurance disputes, or patient complaints, what matters is what is written in the record — not what the VA or provider remembers. If a VA gave a patient specific instructions but didn't document it, they cannot prove it happened."},
+    {q:"A VA is transcribing a doctor's dictated SOAP note and cannot clearly hear one word about the medication dosage. What should they do?",opts:["Choose the most likely dosage for that medication based on general knowledge","Leave the field blank and submit","Flag the unclear portion with [UNCLEAR — please review], save as draft, and notify the provider to confirm before finalizing","Ask a colleague what they think the dosage is"],a:2,exp:"Guessing a medication dosage in a clinical note is dangerous — a wrong dosage in a prescription or treatment record could harm the patient. Always flag unclear portions clearly, mark the note as a draft, and ensure the provider reviews and confirms before the note is finalized and signed."},
+    {q:"What is the purpose of a referral letter?",opts:["To replace the need for a medical appointment — the patient just brings the letter","To inform the specialist of the patient's relevant clinical history, reason for referral, and current medications so care is coordinated","To authorize insurance payment for the specialist visit","To serve as the patient's consent to see the specialist"],a:1,exp:"A referral letter is a clinical communication tool between providers. It gives the specialist the context they need before seeing the patient — what the issue is, what has already been tried, what medications the patient is on, and what the referring physician wants assessed or managed. Without it, the specialist is seeing the patient without any background."},
+    {q:"Which of the following is an example of a VA practicing medicine — which they must NOT do?",opts:["Scheduling a follow-up appointment","Writing 'NKDA' in the allergy field based on patient report","Looking at a symptom description and documenting 'patient likely has the flu' in the clinical note","Sending a prior auth request using a provider-approved template"],a:2,exp:"Documenting a clinical impression ('patient likely has the flu') is diagnosing — a clinical function reserved for licensed providers. A VA documents what the patient says (subjective), not what the patient has (assessment). The correct entry would be 'Patient reports: fever, body aches, runny nose x 2 days.' The clinical team determines the diagnosis."},
+    {q:"An after-visit summary (AVS) has a typo in the patient's medication — it says 50mg instead of 500mg. What should the VA do?",opts:["It's a small typo — the patient will figure it out","Correct it in the EHR before sending it to the patient, then alert the provider to verify the correct dosage","Send it as is and add a note to correct it at the next visit","Rewrite the entire AVS from scratch"],a:1,exp:"A 10x dosage difference (50mg vs 500mg) is a potentially serious medication error. The VA must correct it in the system but must also verify the correct dosage with the provider — the typo may be in the EHR itself, meaning the error could be in the prescription too. Always flag medication discrepancies to clinical staff immediately."},
+    {q:"How long after a patient interaction should documentation be completed?",opts:["Within 24 hours is acceptable","Within one week as long as you remember the details","As soon as possible — ideally during or immediately after the interaction","Documentation timing doesn't matter as long as it's accurate"],a:0,exp:"The standard is 'contemporaneous documentation' — recorded at the time of or immediately after the interaction. Waiting creates memory errors, especially in a high-volume VA role where you may handle dozens of calls a day. Most clinics require documentation within 24 hours; real-time is ideal and most defensible legally."},
+    {q:"A patient denies they were ever told about a follow-up appointment and threatens to complain. Your documentation shows an outbound call at a specific time, what was said, and the patient's verbal confirmation. What does this mean for the clinic?",opts:["Nothing — patient complaints always result in disciplinary action regardless of records","The documentation is the clinic's defense — it proves what was communicated and when","It means the VA was wrong for documenting too much","The documentation is private — it cannot be used in a complaint response"],a:1,exp:"This is exactly why thorough documentation protects both the clinic and the VA. Detailed, timestamped records of patient interactions serve as legal evidence of what was communicated. Patient complaints that are contradicted by clear, contemporaneous documentation are typically dismissed or resolved in the clinic's favor."},
+    {q:"Which is the correct way to document a patient who refused a recommended follow-up appointment?",opts:["Do not document it — only document appointments that happen","Simply note 'patient declined'","Document: the recommendation made, that the patient declined, any reason given, and that they were informed of the risks of not following up. Note 'AMA' (Against Medical Advice) if applicable.","Contact the patient's family to override the refusal"],a:2,exp:"Patient refusals must be documented in full. If a patient declines a clinically recommended action and something adverse happens later, the clinic needs evidence that: (1) the recommendation was made, (2) the patient was informed of the risk, and (3) the patient made an autonomous decision. 'Patient declined' alone is insufficient."}
+  ],
+  // Quiz 3: Insurance Verification
+  [
+    {q:"When should insurance eligibility verification be run?",opts:["Once when the patient first registers, then annually","Only when a patient has a new insurance plan","Within 48 hours before every appointment — insurance can lapse without notice","Only for new patients — established patients are always covered"],a:2,exp:"Insurance coverage can lapse between appointments due to unpaid premiums, job changes, or plan changes — sometimes without the patient even being aware. Running eligibility within 48 hours of each appointment catches lapses before services are rendered. Running it too far in advance misses changes that happen closer to the appointment."},
+    {q:"A patient's insurance shows as 'inactive' during eligibility verification. What should the VA do?",opts:["Proceed with the appointment anyway and sort it out after","Cancel the appointment immediately without informing the patient","Contact the patient to inform them, ask if they have other coverage, and advise them of their self-pay options before the appointment","Assume it's a system error and try again tomorrow"],a:2,exp:"Inactive coverage must be resolved before services are rendered — otherwise the patient could be responsible for the full cost. Contact the patient proactively: 'We ran your insurance check and your plan appears inactive. Do you have another plan, or has your coverage changed recently?' Give them options before they arrive."},
+    {q:"What does 'in-network' mean for a patient's cost?",opts:["The provider is located within 20km of the patient's home","The provider has a contract with the patient's insurer, resulting in lower negotiated rates and full plan coverage","The provider accepts cash only — no insurance claims","The provider is in the same hospital network but not necessarily covered by the plan"],a:1,exp:"In-network providers have signed contracts with the insurer agreeing to negotiated (lower) rates. The insurance plan covers a higher percentage of costs for in-network care. Out-of-network providers charge their full rates, and the insurer may cover little or nothing. Always verify network status before booking specialist or facility appointments."},
+    {q:"Prior authorization is required for an MRI. The patient's appointment is tomorrow. What do you do?",opts:["Schedule the MRI and submit the auth request at the same time — it will arrive eventually","Postpone the MRI until authorization is received and explain why to the patient","Cancel the appointment without explanation","Proceed without auth — radiologists will understand"],a:1,exp:"Prior authorization must be obtained BEFORE the procedure is performed. If it hasn't been processed, the appointment must be postponed. Explain to the patient: 'Your insurer requires pre-approval for this MRI, which I'm requesting urgently now. We'll reschedule as soon as we have the authorization — usually 3–5 business days.' Do not proceed without it."},
+    {q:"What is a deductible and how does it affect a patient's cost per visit?",opts:["It's the monthly fee to maintain insurance — it doesn't affect per-visit costs","The deductible is the annual amount a patient pays out-of-pocket before insurance starts covering costs. Until met, the patient pays the full contracted rate per visit.","It's a fixed fee per visit, like a copay","Deductibles only apply to hospital stays — not outpatient clinic visits"],a:1,exp:"The deductible is the annual amount a patient must pay before insurance begins covering costs. For example, a $1,000 deductible means the patient pays the first $1,000 of medical expenses each year at the contracted rate. Once met, their cost drops to their copay or coinsurance percentage. Always tell patients their remaining deductible so there are no billing surprises."},
+    {q:"A patient calls to complain that they received a bill for a service they thought was covered. After investigating, you find their deductible was not met. What should have happened during scheduling?",opts:["Nothing — it's the patient's responsibility to know their own deductible","The VA should have informed the patient of their remaining deductible and estimated out-of-pocket cost during the scheduling call","The VA should have denied the appointment until the patient paid","This situation is the billing department's responsibility, not the VA's"],a:1,exp:"Informing patients of expected out-of-pocket costs is a standard part of insurance verification. 'Your plan covers this visit, but you have $312 remaining on your deductible, so today's cost will be approximately $40-$60.' This prevents billing shock, reduces disputes, and builds trust. It's a best practice and in some states a legal requirement."},
+    {q:"What is the most common reason insurance claims are denied?",opts:["Provider errors in clinical notes","Missing or incorrect patient demographic / insurance information","Services performed on weekends","Patients who have more than one insurance plan"],a:1,exp:"Incorrect patient information — wrong member ID, wrong name spelling, wrong date of birth, wrong group number — accounts for approximately 30% of claim denials. This is largely preventable through careful intake verification, digit-by-digit member ID confirmation, and running an eligibility check before every appointment."},
+    {q:"A patient has both a primary insurance plan and a secondary (supplemental) plan. Which is billed first?",opts:["Whichever plan has the higher coverage amount","Secondary insurance is always billed first to maximize payment","Primary insurance is always billed first; secondary is billed for the remaining patient balance","The patient chooses which plan to use each visit"],a:2,exp:"In coordination of benefits, primary insurance is always billed first. Once the primary payer processes the claim and pays their portion, the remaining balance (patient responsibility) is submitted to secondary insurance. A VA must document both plans during intake and ensure the billing team codes the claim correctly for dual coverage."},
+    {q:"A VA calls the insurance company's provider line to verify eligibility and the representative gives verbal confirmation. What must the VA do with this information?",opts:["Verbally pass it to the billing team — no documentation needed","Document the call in full: date, time, insurer name, rep name, reference number, and what was confirmed","Trust the verbal confirmation and proceed without documentation","Only document if the news is bad (e.g. plan inactive)"],a:1,exp:"Every insurance verification call must be documented with: the date/time of the call, the payer name, the representative's name, the reference or confirmation number, and exactly what was verified. Without this, there is no proof of what was confirmed if the insurer later denies the claim or provides different information."},
+    {q:"What does 'coordination of benefits' (COB) mean when a patient has two insurance plans?",opts:["It means the two insurance companies decide which one covers the patient","It is the process that determines the order in which two insurance plans pay for a patient's care to prevent double payment","It means the patient can choose different insurance plans for different services","It refers to the patient coordinating their benefits payments directly with the clinic"],a:1,exp:"Coordination of Benefits (COB) is the process that prevents a patient with two insurance plans from being paid more than 100% of the service cost. It establishes which plan is primary (pays first) and which is secondary (picks up remaining costs). The primary payer pays their contracted amount first; the secondary then processes the residual balance."}
+  ]
+];
+
+const qScores = [0,0,0,0];
+const qAnswered = [[],[],[],[]];
+const qTotal = [0,0,0,0];
+
+function buildPanel(qi){
+  const container = document.getElementById('qpanel'+qi);
+  container.innerHTML='';
+  const qs = QUIZ_DATA[qi];
+  const ph = document.createElement('div');
+  ph.className='panel-header';
+  const tags=['LESSON 01 · SCHEDULING','LESSON 02 · INTAKE FORMS','LESSON 03 · DOCUMENTATION','LESSON 04 · INSURANCE VERIFICATION'];
+  const titles=['Appointment Scheduling Quiz','Patient Intake Forms Quiz','Documentation Quiz','Insurance Verification Quiz'];
+  ph.innerHTML=`<div class="page-tag">${tags[qi]}</div><h3 style="font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.3rem">${titles[qi]}</h3><p style="font-size:.83rem;color:var(--slate)">Answer all 10 questions. Each answer includes a full explanation.</p><div class="prog-bar"><div class="prog-fill" id="qprog${qi}" style="width:0%"></div></div><div class="prog-text" id="qprog-lbl${qi}">0 of 10 answered</div>`;
+  container.appendChild(ph);
+  qs.forEach((q,i)=>{
+    const blk = document.createElement('div');
+    blk.className='quiz-block';
+    blk.id='qblk'+qi+'_'+i;
+    blk.innerHTML=`<div class="q-header"><span class="q-num-badge">Q${i+1}/10</span><div class="q-text">${q.q}</div></div><div class="q-opts" id="qopts${qi}_${i}">${q.opts.map((o,oi)=>`<button class="qopt" onclick="pickA(${qi},${i},${oi},this)">${o}</button>`).join('')}</div><div class="q-exp" id="qexp${qi}_${i}"></div>`;
+    container.appendChild(blk);
+  });
+  const sr = document.createElement('div');
+  sr.className='score-result';
+  sr.id='qscore'+qi;
+  sr.innerHTML=`<div class="score-big" id="qsn${qi}"></div><div class="score-label">out of 10</div><div style="max-width:240px;margin:.5rem auto 1rem;background:rgba(255,255,255,.07);border-radius:5px;height:8px;overflow:hidden"><div id="qsbar${qi}" style="height:100%;border-radius:5px;transition:width .6s"></div></div><div class="score-msg" id="qsmsg${qi}"></div><button class="btn btn-primary" onclick="resetQ(${qi})" style="margin-top:.5rem">Retake quiz</button>`;
+  container.appendChild(sr);
+}
+
+function pickA(qi,i,oi,btn){
+  if(qAnswered[qi].includes(i)) return;
+  qAnswered[qi].push(i);
+  const correct = QUIZ_DATA[qi][i].a===oi;
+  const opts = document.getElementById('qopts'+qi+'_'+i);
+  opts.querySelectorAll('.qopt').forEach(b=>b.setAttribute('disabled',''));
+  if(correct){btn.classList.add('correct');qScores[qi]++;}
+  else{btn.classList.add('wrong');opts.querySelectorAll('.qopt')[QUIZ_DATA[qi][i].a].classList.add('reveal');}
+  const exp = document.getElementById('qexp'+qi+'_'+i);
+  exp.className='q-exp '+(correct?'ok':'bad');
+  exp.innerHTML=(correct?'<strong>Correct!</strong> ':'<strong>Not quite.</strong> ')+QUIZ_DATA[qi][i].exp;
+  exp.style.display='block';
+  const done=qAnswered[qi].length;
+  document.getElementById('qprog'+qi).style.width=(done*10)+'%';
+  document.getElementById('qprog-lbl'+qi).textContent=done+' of 10 answered';
+  if(done===10) showQScore(qi);
+  updateOverall();
+}
+
+function showQScore(qi){
+  const s=qScores[qi];
+  const box=document.getElementById('qscore'+qi);
+  box.style.display='block';
+  const el=document.getElementById('qsn'+qi);
+  el.textContent=s;
+  el.style.color=s>=8?'#00d4aa':s>=6?'#fac74b':'#e24b4a';
+  document.getElementById('qsbar'+qi).style.cssText=`width:${s*10}%;background:${s>=8?'#00d4aa':s>=6?'#fac74b':'#e24b4a'}`;
+  const msgs=['Keep at it — review the explanations and try again!','Good effort! A few more reviews and you\'ll nail it.','Solid knowledge! Just a couple more to perfect.','Almost perfect — great work!','Perfect score! You\'ve mastered this lesson!'];
+  document.getElementById('qsmsg'+qi).textContent=msgs[Math.min(Math.floor(s/2),4)];
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function resetQ(qi){
+  qScores[qi]=0;qAnswered[qi]=[];
+  document.getElementById('qprog'+qi).style.width='0%';
+  document.getElementById('qprog-lbl'+qi).textContent='0 of 10 answered';
+  document.getElementById('qscore'+qi).style.display='none';
+  buildPanel(qi);
+  updateOverall();
+}
+
+function showQuiz(n){
+  [0,1,2,3].forEach(i=>{
+    const tab = document.getElementById('qtab'+i);
+    const panel = document.getElementById('qpanel'+i);
+    panel.classList.toggle('active',i===n);
+    if(tab){
+      tab.style.color = i===n ? 'var(--teal)' : 'var(--slate)';
+      tab.style.borderBottom = i===n ? '2px solid var(--teal)' : '2px solid transparent';
+      tab.style.background = i===n ? 'rgba(0,212,170,0.06)' : 'transparent';
+    }
+  });
+}
+
+function showPage(id){
+  PAGES.forEach(p=>{
+    document.getElementById('page-'+p).classList.toggle('active',p===id);
+  });
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{
+    t.classList.toggle('active',PAGES[i]===id);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='quiz') setTimeout(()=>rebuildAllQuizzes(),50);
+}
+
+let quizzesBuilt=false;
+function rebuildAllQuizzes(){
+  if(quizzesBuilt) return;
+  quizzesBuilt=true;
+  [0,1,2,3].forEach(i=>buildPanel(i));
+}
+
+function updateOverall(){
+  const total=qAnswered[0].length+qAnswered[1].length+qAnswered[2].length+qAnswered[3].length;
+  const pct=Math.round(total/40*100);
+  document.getElementById('overall-pct').textContent=pct+'%';
+}
+
+document.querySelectorAll('.topnav .nav-tab').forEach((t,i)=>{t.onclick=()=>showPage(PAGES[i]);});
+
+</script>
+</body>
+</html>
